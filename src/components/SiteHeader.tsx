@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
 import logo from "@/assets/logo.png";
-import { WhatsAppButton } from "./WhatsAppButton";
 import { CartButton } from "./CartDrawer";
 
 
@@ -51,9 +50,12 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <div className="hidden sm:block">
-            <WhatsAppButton size="sm" />
-          </div>
+          <Link
+            to="/admin/login"
+            className="hidden rounded-full border border-border px-3 py-1.5 text-sm font-semibold text-foreground/80 hover:text-primary sm:inline-flex"
+          >
+            Área admin
+          </Link>
           <CartButton />
 
           <button
@@ -82,9 +84,13 @@ export function SiteHeader() {
                 {item.label}
               </Link>
             ))}
-            <div className="sm:hidden">
-              <WhatsAppButton size="sm" block className="mt-3" />
-            </div>
+            <Link
+              to="/admin/login"
+              onClick={() => setOpen(false)}
+              className="py-2.5 text-base font-semibold text-muted-foreground"
+            >
+              Área admin
+            </Link>
           </nav>
         </div>
       )}
