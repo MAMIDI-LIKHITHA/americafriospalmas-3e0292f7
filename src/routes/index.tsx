@@ -26,10 +26,6 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "https://americafriospalmas.lovable.app/" }],
-    scripts: localBusinessSchema().map((schema) => ({
-      type: "application/ld+json",
-      children: JSON.stringify(schema),
-    })),
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(catalogQueryOptions),
   component: Index,
@@ -61,6 +57,12 @@ function Index() {
 
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(localBusinessSchema()).replace(/</g, "\\u003c"),
+        }}
+      />
       <section className="relative overflow-hidden border-b border-border">
         <img
           src={heroImg}
