@@ -3,6 +3,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { Star, Store, MessageCircle, PackageCheck, Sparkles, Utensils, Instagram } from "lucide-react";
 
 import { CategoryCard } from "@/components/CategoryCard";
+import { EspetinhosShowcase } from "@/components/EspetinhosShowcase";
 import { StoreCard } from "@/components/StoreCard";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { catalogQueryOptions } from "@/lib/catalog";
@@ -54,6 +55,7 @@ const EXPERIENCES = [
 
 function Index() {
   const { data: categories } = useSuspenseQuery(catalogQueryOptions);
+  const espetinhos = categories.find((c) => c.slug === "espetinhos" && c.products.length > 0);
 
   return (
     <div>
@@ -90,6 +92,8 @@ function Index() {
           </div>
         </div>
       </section>
+
+      {espetinhos && <EspetinhosShowcase category={espetinhos} />}
 
       <section className="border-b border-border bg-card py-10">
         <div className="container-page grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

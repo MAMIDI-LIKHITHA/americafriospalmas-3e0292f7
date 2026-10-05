@@ -116,10 +116,13 @@ function AdminProductsPage() {
   }, [products]);
 
   const visible = useMemo(() => {
-    const term = search.trim().toLowerCase();
+    const norm = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    const rawTerm = norm(search.trim());
+    // "espeto", "espetinho", "espetinhos" → all match skewer products
+    const term = rawTerm.startsWith("espet") ? "espet" : rawTerm;
     const list = products.filter((p) => {
       if (category !== "all" && p.category !== category) return false;
-      if (term && !p.name.toLowerCase().includes(term)) return false;
+      if (term && !norm(`${p.name} ${p.category}`).includes(term)) return false;
       return true;
     });
 
