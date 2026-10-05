@@ -42,6 +42,12 @@ export const CATEGORY_META: {
   description: string;
 }[] = [
   {
+    slug: "espetinhos",
+    name: "Espetinhos",
+    image: espetinhos,
+    description: "Espetinhos de carne, frango, linguiça e queijo. Escolha seus favoritos e monte seu pedido.",
+  },
+  {
     slug: "frios",
     name: "Frios",
     image: frios,

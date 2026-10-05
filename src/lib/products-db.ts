@@ -17,6 +17,7 @@ export type AdminProduct = {
 };
 
 export const PRODUCT_CATEGORIES = [
+  "Espetinhos",
   "Frios",
   "Queijos",
   "Presuntos",
