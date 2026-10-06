@@ -194,6 +194,7 @@ export type Database = {
         Row: {
           created_at: string
           customer_email: string | null
+          customer_id: string | null
           customer_name: string
           customer_phone: string
           delivery_address: string | null
@@ -213,6 +214,7 @@ export type Database = {
         Insert: {
           created_at?: string
           customer_email?: string | null
+          customer_id?: string | null
           customer_name: string
           customer_phone: string
           delivery_address?: string | null
@@ -232,6 +234,7 @@ export type Database = {
         Update: {
           created_at?: string
           customer_email?: string | null
+          customer_id?: string | null
           customer_name?: string
           customer_phone?: string
           delivery_address?: string | null
@@ -315,6 +318,33 @@ export type Database = {
           updated_at?: string
           wholesale_min?: number
           wholesale_price?: number | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          address: string | null
+          created_at: string
+          id: string
+          name: string
+          phone: string
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          id: string
+          name?: string
+          phone?: string
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          phone?: string
+          updated_at?: string
         }
         Relationships: []
       }

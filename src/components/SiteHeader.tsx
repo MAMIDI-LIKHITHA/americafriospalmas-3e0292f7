@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, UserRound, X } from "lucide-react";
 
 import logo from "@/assets/logo.png";
 import { CartButton } from "./CartDrawer";
@@ -55,6 +55,13 @@ export function SiteHeader() {
             className="hidden rounded-full border border-border px-3 py-1.5 text-sm font-semibold text-foreground/80 hover:text-primary sm:inline-flex"
           >
             Área admin
+          </Link>
+          <Link
+            to="/conta"
+            aria-label="Minha conta"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:border-primary hover:text-primary"
+          >
+            <UserRound className="h-5 w-5" />
           </Link>
           <CartButton />
 
