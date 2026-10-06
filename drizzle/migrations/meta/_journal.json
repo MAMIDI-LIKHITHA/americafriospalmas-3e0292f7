@@ -8,6 +8,13 @@
       "when": 1791294914555,
       "tag": "0000_customer_accounts_and_order_history",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791295629870,
+      "tag": "0001_profile_address_fields",
+      "breakpoints": true
     }
   ]
 }
