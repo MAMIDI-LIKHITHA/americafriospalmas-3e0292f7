@@ -324,25 +324,37 @@ export type Database = {
       profiles: {
         Row: {
           address: string | null
+          cep: string | null
+          city: string | null
+          complement: string | null
           created_at: string
           id: string
           name: string
+          neighborhood: string | null
           phone: string
           updated_at: string
         }
         Insert: {
           address?: string | null
+          cep?: string | null
+          city?: string | null
+          complement?: string | null
           created_at?: string
           id: string
           name?: string
+          neighborhood?: string | null
           phone?: string
           updated_at?: string
         }
         Update: {
           address?: string | null
+          cep?: string | null
+          city?: string | null
+          complement?: string | null
           created_at?: string
           id?: string
           name?: string
+          neighborhood?: string | null
           phone?: string
           updated_at?: string
         }
