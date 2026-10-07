@@ -54,6 +54,7 @@ function localProductImage(product: Pick<Product, "id" | "name" | "category">) {
   if (has("agua com gas", "agua-com-gas")) return productAguaGas;
   if (has("suco natural", "suco-natural")) return productSucoNatural;
 
+  if (has("espetinho de alcatra", "espetinho-alcatra", "alcatra")) return productCarne;
   if (has("espetinho de carne", "espetinho-carne")) return productCarne;
   if (has("espetinho de frango", "espetinho-frango")) return productFrango;
   if (has("espetinho de linguica", "espetinho-linguica")) return productLinguicaEspetinho;
