@@ -80,7 +80,7 @@ export async function ensureDineInStarterCatalog() {
     .eq("category_id", categoryId);
   if (existingError) throw existingError;
 
-  const existingNames = new Set((existing ?? []).map((x) => x.name.toLowerCase()));
+  const existingNames = new Set((existing ?? []).map((x: { name: string }) => x.name.toLowerCase()));
   const missing = STARTER_ITEMS.filter(([name]) => !existingNames.has(name.toLowerCase()));
 
   if (missing.length) {
