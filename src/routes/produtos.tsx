@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
+import { Search, Star } from "lucide-react";
 
 import { CategoryCard } from "@/components/CategoryCard";
 import { ModeToggle } from "@/components/ModeToggle";
@@ -42,6 +44,26 @@ function CatalogError() {
 
 function ProdutosPage() {
   const { data: categories } = useSuspenseQuery(catalogQueryOptions);
+  const [search, setSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
+  const filteredCategories = useMemo(() => {
+    const term = search.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    return categories
+      .filter((category) => selectedCategory === "all" || category.slug === selectedCategory)
+      .map((category) => ({
+        ...category,
+        products: category.products.filter((product) => {
+          if (!term) return true;
+          return `${product.name} ${product.category} ${product.description ?? ""}`
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase()
+            .includes(term);
+        }),
+      }))
+      .filter((category) => category.products.length > 0);
+  }, [categories, search, selectedCategory]);
 
   return (
     <div className="container-page py-14">
@@ -61,11 +83,21 @@ function ProdutosPage() {
         </p>
       </div>
 
-      <div className="mt-10 grid gap-6 lg:grid-cols-2">
-        {categories.map((c) => (
-          <CategoryCard key={c.name} category={c} showProducts />
-        ))}
+      <div className="mt-8 space-y-4">
+        <div className="relative">
+          <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar produtos, carnes, queijos, espetinhos..." aria-label="Buscar produtos" className="w-full rounded-xl border border-border bg-background py-3 pl-12 pr-4 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+        </div>
+        <div className="flex gap-2 overflow-x-auto pb-1">
+          <button type="button" onClick={() => setSelectedCategory("all")} className={selectedCategory === "all" ? "shrink-0 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground" : "shrink-0 rounded-full bg-secondary px-4 py-2 text-sm font-semibold text-secondary-foreground"}>Todas</button>
+          {categories.map((c) => <button key={c.slug} type="button" onClick={() => setSelectedCategory(c.slug)} className={selectedCategory === c.slug ? "shrink-0 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground" : "shrink-0 rounded-full bg-secondary px-4 py-2 text-sm font-semibold text-secondary-foreground"}>{c.name}</button>)}
+        </div>
       </div>
+      {filteredCategories.length === 0 ? <div className="mt-8 rounded-2xl border border-border bg-card p-10 text-center"><p className="font-semibold">Nenhum produto encontrado.</p><p className="mt-1 text-sm text-muted-foreground">Tente outro termo ou escolha outra categoria.</p></div> :
+        <div className="mt-10 space-y-8">
+          {filteredCategories.map((c) => <div key={c.name} className={c.name === "Espetinhos" ? "rounded-2xl border-2 border-primary/40 bg-primary/5 p-2 sm:p-3" : ""}>{c.name === "Espetinhos" && <div className="mb-2 flex items-center gap-2 px-3 pt-2 text-sm font-bold text-primary"><Star className="h-4 w-4 fill-current" /> Destaque da casa</div>}<CategoryCard category={c} showProducts /></div>)}
+        </div>
+      }
 
       <section className="mt-14 rounded-2xl bg-charcoal px-6 py-12 text-center text-cream">
         <h2 className="font-display text-2xl md:text-3xl">
