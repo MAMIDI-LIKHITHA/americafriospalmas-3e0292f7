@@ -46,7 +46,14 @@ export const getCatalog = createServerFn({ method: "GET" }).handler(
 
     const rows = (data ?? []).filter((r) => r.slug && Number(r.price ?? 0) > 0);
 
-    // ProductRow resolves the bundled storefront images from src/assets/product-images.\n    const imageUrl = (value: string | null) => {\n      if (!value) return null;\n      if (/^https?:\\/\\//i.test(value)) return value;\n      return supabase.storage.from("product-images").getPublicUrl(value).data.publicUrl;\n    };\n\n    const byCategory = new Map<string, Product[]>();
+    // ProductRow resolves the bundled storefront images from src/assets/product-images.
+    const imageUrl = (value: string | null) => {
+      if (!value) return null;
+      if (/^https?:\\/\\//i.test(value)) return value;
+      return supabase.storage.from("product-images").getPublicUrl(value).data.publicUrl;
+    };
+
+    const byCategory = new Map<string, Product[]>();
     for (const r of rows) {
       const retail = Number(r.price ?? 0);
       const wholesale = Number(r.wholesale_price ?? retail) || retail;
