@@ -1,5 +1,21 @@
 import { useState } from "react";
 import { ImageIcon, ShoppingCart, Star } from "lucide-react";
+import productCarne from "@/assets/product-images/01-espetinhos-de-carne.jpg";
+import productFrango from "@/assets/product-images/02-espetinhos-de-frango.jpg";
+import productLinguicaEspetinho from "@/assets/product-images/03-espetinhos-de-linguica.jpg";
+import productCoracao from "@/assets/product-images/04-espetinhos-de-coracao.jpg";
+import productQueijoEspetinho from "@/assets/product-images/05-espetinhos-de-queijo-coalho.jpg";
+import productBacon from "@/assets/product-images/06-espetinhos-de-bacon.jpg";
+import productToscana from "@/assets/product-images/07-linguica-toscana.jpg";
+import productCalabresa from "@/assets/product-images/08-linguica-calabresa.jpg";
+import productDefumada from "@/assets/product-images/09-linguica-defumada.jpg";
+import productPresunto from "@/assets/product-images/10-presunto.jpg";
+import productPresuntoFatiado from "@/assets/product-images/11-presunto-fatiado.jpg";
+import productMussarela from "@/assets/product-images/12-queijo-mussarela.jpg";
+import productPrato from "@/assets/product-images/13-queijo-prato.jpg";
+import productQueijoCoalho from "@/assets/product-images/14-queijo-coalho.jpg";
+import productSalameItaliano from "@/assets/product-images/15-salame-italiano.jpg";
+import productSalameFatiado from "@/assets/product-images/16-salame-fatiado.jpg";
 import { toast } from "sonner";
 
 import { QuantityStepper } from "./QuantityStepper";
@@ -7,13 +23,55 @@ import { useCart, unitPriceFor } from "@/lib/cart";
 import { brl } from "@/lib/order";
 import type { Product } from "@/lib/products";
 
+const normalize = (value: string) =>
+  value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+
+function localProductImage(product: Pick<Product, "name" | "category">) {
+  const n = normalize(product.name);
+  const c = normalize(product.category);
+  const has = (...terms: string[]) => terms.some((term) => n.includes(normalize(term)));
+
+  if (c.includes("espetinho") || n.includes("espetinho")) {
+    if (has("carne")) return productCarne;
+    if (has("frango")) return productFrango;
+    if (has("linguica")) return productLinguicaEspetinho;
+    if (has("coracao")) return productCoracao;
+    if (has("queijo coalho")) return productQueijoEspetinho;
+    if (has("bacon")) return productBacon;
+  }
+
+  if (c.includes("linguica")) {
+    if (has("toscana")) return productToscana;
+    if (has("calabresa")) return productCalabresa;
+    if (has("defumada")) return productDefumada;
+  }
+
+  if (c.includes("presunto") || n.includes("presunto")) {
+    return has("fatiado", "fatiada") ? productPresuntoFatiado : productPresunto;
+  }
+
+  if (c.includes("queijo") || n.includes("queijo")) {
+    if (has("mussarela", "muçarela", "mucarela")) return productMussarela;
+    if (has("prato")) return productPrato;
+    if (has("queijo coalho")) return productQueijoCoalho;
+  }
+
+  if (c.includes("salame") || n.includes("salame")) {
+    if (has("fatiado", "fatiada")) return productSalameFatiado;
+    if (has("italiano")) return productSalameItaliano;
+  }
+
+  return null;
+}
+
 export function ProductRow({ product }: { product: Product }) {
   const { add, mode, setDrawerOpen } = useCart();
   const [qty, setQty] = useState(1);
   const [imageFailed, setImageFailed] = useState(false);
   const { price, wholesaleApplied } = unitPriceFor(product, qty, mode);
 
-  const imageSource = product.image;
+  // Resolve bundled Vite assets on the client. This avoids runtime/public/remote URL failures.
+  const imageSource = localProductImage(product) ?? product.image;
   const showImage = Boolean(imageSource) && !imageFailed;
 
   return (
