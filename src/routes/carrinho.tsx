@@ -19,6 +19,8 @@ import {
 } from "@/lib/order";
 import { STORES, WHATSAPP_NUMBERS } from "@/lib/site";
 import { supabase } from "@/integrations/supabase/client";
+import { PhoneOtpLogin } from "@/components/PhoneOtpLogin";
+import { displayBrPhone } from "@/lib/phone";
 
 const description =
   "Finalize seu pedido de frios, embutidos, suínos, frangos e espetinhos na América Frios Palmas: informe seus dados, escolha entrega ou retirada e envie o resumo pelo WhatsApp para confirmação.";
@@ -63,17 +65,18 @@ function CarrinhoPage() {
       if (data.session) {
         const { data: profile } = await supabase
           .from("profiles")
-          .select("name, phone, address")
+          .select("name, phone, address, complement, neighborhood, city, cep")
           .eq("id", data.session.user.id)
           .maybeSingle();
-        if (profile) {
-          setForm((current) => ({
-            ...current,
-            name: profile.name || current.name,
-            phone: profile.phone || current.phone,
-            address: profile.address || current.address,
-          }));
-        }
+        const fullAddress = profile
+          ? [profile.address, profile.complement, profile.neighborhood, profile.city, profile.cep].filter(Boolean).join(", ")
+          : "";
+        setForm((current) => ({
+          ...current,
+          name: profile?.name || current.name,
+          phone: displayBrPhone(data.session!.user.phone) || profile?.phone || current.phone,
+          address: fullAddress || current.address,
+        }));
       }
     });
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => setAuthenticated(Boolean(session)));
