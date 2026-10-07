@@ -32,18 +32,11 @@ export function CartDrawer() {
   if (!drawerOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[60]">
-      <button
-        type="button"
-        aria-label="Fechar carrinho"
-        onClick={() => setDrawerOpen(false)}
-        className="absolute inset-0 bg-charcoal/50"
-      />
+    <div className="fixed inset-y-0 right-0 z-[60] pointer-events-none">
       <aside
         role="dialog"
-        aria-modal="true"
         aria-labelledby="cart-drawer-title"
-        className="absolute top-0 right-0 flex h-full w-full max-w-md flex-col bg-background shadow-2xl"
+        className="pointer-events-auto flex h-full w-[min(420px,100vw)] flex-col border-l border-border bg-background shadow-2xl"
       >
         <header className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
           <h2 id="cart-drawer-title" className="font-display text-lg font-bold">Seu carrinho</h2>
