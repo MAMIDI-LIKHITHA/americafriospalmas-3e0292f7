@@ -12,7 +12,7 @@ import espetinhosFallback from "@/assets/espetinhos.jpg";
 import atacadoFallback from "@/assets/atacado.jpg";
 
 function getCategoryFallback(category: Category) {
-  const name = category.name.normalize("NFD").replace(/[\\u0300-\\u036f]/g, "").toLowerCase();
+  const name = category.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
   if (name.includes("espetinho")) return espetinhosFallback;
   if (name.includes("embutido") || name.includes("linguica")) return embutidosFallback;
