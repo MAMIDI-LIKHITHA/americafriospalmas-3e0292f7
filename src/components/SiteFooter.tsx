@@ -119,9 +119,17 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-cream/10 py-5">
-        <p className="container-page text-xs text-cream/50">
-          © {new Date().getFullYear()} América Frios — Atacado e Varejo. Palmas, Tocantins.
-        </p>
+        <div className="container-page flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-cream/50">
+            © {new Date().getFullYear()} América Frios — Atacado e Varejo. Palmas, Tocantins.
+          </p>
+          <Link
+            to="/admin/login"
+            className="text-xs text-cream/40 transition-colors hover:text-cream/70"
+          >
+            Acesso administrativo
+          </Link>
+        </div>
       </div>
     </footer>
   );
