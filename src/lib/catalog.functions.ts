@@ -1,6 +1,23 @@
 import { createServerFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 
+import productCarne from "@/assets/product-images/01-espetinhos-de-carne.jpg";
+import productFrango from "@/assets/product-images/02-espetinhos-de-frango.jpg";
+import productLinguicaEspetinho from "@/assets/product-images/03-espetinhos-de-linguica.jpg";
+import productCoracao from "@/assets/product-images/04-espetinhos-de-coracao.jpg";
+import productQueijoEspetinho from "@/assets/product-images/05-espetinhos-de-queijo-coalho.jpg";
+import productBacon from "@/assets/product-images/06-espetinhos-de-bacon.jpg";
+import productToscana from "@/assets/product-images/07-linguica-toscana.jpg";
+import productCalabresa from "@/assets/product-images/08-linguica-calabresa.jpg";
+import productDefumada from "@/assets/product-images/09-linguica-defumada.jpg";
+import productPresunto from "@/assets/product-images/10-presunto.jpg";
+import productPresuntoFatiado from "@/assets/product-images/11-presunto-fatiado.jpg";
+import productMussarela from "@/assets/product-images/12-queijo-mussarela.jpg";
+import productPrato from "@/assets/product-images/13-queijo-prato.jpg";
+import productQueijoCoalho from "@/assets/product-images/14-queijo-coalho.jpg";
+import productSalameItaliano from "@/assets/product-images/15-salame-italiano.jpg";
+import productSalameFatiado from "@/assets/product-images/16-salame-fatiado.jpg";
+
 import type { Database } from "@/integrations/supabase/types";
 import {
   CATEGORY_META,
@@ -52,7 +69,7 @@ export const getCatalog = createServerFn({ method: "GET" }).handler(
     const normalize = (value: string | null | undefined) =>
       (value ?? "")
         .normalize("NFD")
-        .replace(/[\\u0300-\\u036f]/g, "")
+        .replace(/[\u0300-\u036f]/g, "")
         .toLowerCase()
         .trim();
 
