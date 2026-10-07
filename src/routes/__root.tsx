@@ -127,6 +127,17 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function MainContent() {
+  const { drawerOpen } = useCart();
+
+  return (
+    <main className={`flex-1 transition-[padding] duration-200 ${drawerOpen ? "lg:pr-[420px]" : ""}`}>
+      {/* Keep the catalog interactive while the cart is open. */}
+      <Outlet />
+    </main>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
@@ -135,10 +146,7 @@ function RootComponent() {
       <CartProvider>
         <div className="flex min-h-screen flex-col">
           <SiteHeader />
-          <main className="flex-1">
-            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-            <Outlet />
-          </main>
+          <MainContent />
           <SiteFooter />
         </div>
         <CartDrawer />
