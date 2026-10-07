@@ -40,7 +40,18 @@ function localProductImage(product: Pick<Product, "name" | "category">) {
   const c = normalize(product.category);
   const has = (...terms: string[]) => terms.some((term) => n.includes(normalize(term)));
 
-  if (c.includes("espetinho") || n.includes("espetinho")) {
+  // Match specific products by name first so generic categories cannot steal an image.
+  if (has("sanduiche de presunto e queijo")) return productSanduiche;
+  if (has("linguica na chapa")) return productLinguicaChapa;
+  if (has("pao de alho")) return productPaoAlho;
+  if (has("porcao de batata frita", "batata frita")) return productBatataFrita;
+  if (has("refrigerante em lata", "refrigerante lata")) return productRefriLata;
+  if (has("refrigerante 600ml", "refrigerante 600 ml")) return productRefri600;
+  if (has("agua mineral")) return productAguaMineral;
+  if (has("agua com gas")) return productAguaGas;
+  if (has("suco natural")) return productSucoNatural;
+
+  if (has("espetinho")) {
     if (has("carne")) return productCarne;
     if (has("frango")) return productFrango;
     if (has("linguica")) return productLinguicaEspetinho;
@@ -49,36 +60,19 @@ function localProductImage(product: Pick<Product, "name" | "category">) {
     if (has("bacon")) return productBacon;
   }
 
-  if (c.includes("linguica")) {
-    if (has("toscana")) return productToscana;
-    if (has("calabresa")) return productCalabresa;
-    if (has("defumada")) return productDefumada;
-  }
+  if (has("linguica toscana")) return productToscana;
+  if (has("linguica calabresa")) return productCalabresa;
+  if (has("linguica defumada")) return productDefumada;
 
-  if (c.includes("presunto") || n.includes("presunto")) {
-    return has("fatiado", "fatiada") ? productPresuntoFatiado : productPresunto;
-  }
+  if (has("presunto fatiado", "presunto fatiada")) return productPresuntoFatiado;
+  if (has("presunto") || c.includes("presunto")) return productPresunto;
 
-  if (c.includes("queijo") || n.includes("queijo")) {
-    if (has("mussarela", "muçarela", "mucarela")) return productMussarela;
-    if (has("prato")) return productPrato;
-    if (has("queijo coalho")) return productQueijoCoalho;
-  }
+  if (has("queijo mussarela", "mussarela")) return productMussarela;
+  if (has("queijo prato")) return productPrato;
+  if (has("queijo coalho")) return productQueijoCoalho;
 
-  if (has("linguica na chapa", "linguiça na chapa")) return productLinguicaChapa;
-  if (has("pao de alho", "pão de alho")) return productPaoAlho;
-  if (has("batata frita", "porcao de batata")) return productBatataFrita;
-  if (has("sanduiche de presunto e queijo", "sanduíche de presunto e queijo")) return productSanduiche;
-  if (has("refrigerante em lata", "refrigerante lata")) return productRefriLata;
-  if (has("refrigerante 600ml", "refrigerante 600 ml")) return productRefri600;
-  if (has("agua mineral", "água mineral")) return productAguaMineral;
-  if (has("agua com gas", "água com gás")) return productAguaGas;
-  if (has("suco natural", "suco")) return productSucoNatural;
-
-  if (c.includes("salame") || n.includes("salame")) {
-    if (has("fatiado", "fatiada")) return productSalameFatiado;
-    if (has("italiano")) return productSalameItaliano;
-  }
+  if (has("salame italiano")) return productSalameItaliano;
+  if (has("salame fatiado", "salame fatiada")) return productSalameFatiado;
 
   return null;
 }
