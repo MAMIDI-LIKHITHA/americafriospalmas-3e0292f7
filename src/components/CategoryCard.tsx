@@ -4,6 +4,23 @@ import { ImageIcon } from "lucide-react";
 import type { Category } from "@/lib/products";
 import { ProductRow } from "./ProductRow";
 import { brl } from "@/lib/order";
+import friosFallback from "@/assets/frios.jpg";
+import embutidosFallback from "@/assets/embutidos.jpg";
+import carnesFallback from "@/assets/suinos.jpg";
+import frangoFallback from "@/assets/frangos.jpg";
+import espetinhosFallback from "@/assets/espetinhos.jpg";
+import atacadoFallback from "@/assets/atacado.jpg";
+
+function getCategoryFallback(category: Category) {
+  const name = category.name.normalize("NFD").replace(/[\\u0300-\\u036f]/g, "").toLowerCase();
+
+  if (name.includes("espetinho")) return espetinhosFallback;
+  if (name.includes("embutido") || name.includes("linguica")) return embutidosFallback;
+  if (name.includes("carne")) return carnesFallback;
+  if (name.includes("frango")) return frangoFallback;
+  if (name.includes("congelado")) return atacadoFallback;
+  return friosFallback;
+}
 
 export function CategoryCard({
   category,
@@ -13,6 +30,7 @@ export function CategoryCard({
   showProducts?: boolean;
 }) {
   const from = Math.min(...category.products.map((p) => p.retail));
+  const fallbackImage = getCategoryFallback(category);
 
   return (
     <article className={showProducts ? "space-y-4" : "card-surface flex flex-col overflow-hidden"} id={category.slug}>
@@ -27,8 +45,14 @@ export function CategoryCard({
               loading="lazy"
               className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
               onError={(event) => {
-                event.currentTarget.style.display = "none";
-                event.currentTarget.nextElementSibling?.classList.remove("hidden");
+                const image = event.currentTarget;
+                if (image.dataset.fallbackApplied === "true") {
+                  image.style.display = "none";
+                  image.nextElementSibling?.classList.remove("hidden");
+                  return;
+                }
+                image.dataset.fallbackApplied = "true";
+                image.src = fallbackImage;
               }}
             />
           ) : null}
