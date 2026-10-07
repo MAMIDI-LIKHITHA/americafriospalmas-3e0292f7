@@ -16,6 +16,15 @@ import productPrato from "@/assets/product-images/13-queijo-prato.jpg";
 import productQueijoCoalho from "@/assets/product-images/14-queijo-coalho.jpg";
 import productSalameItaliano from "@/assets/product-images/15-salame-italiano.jpg";
 import productSalameFatiado from "@/assets/product-images/16-salame-fatiado.jpg";
+import productLinguicaChapa from "@/assets/product-images/17-linguica-na-chapa.jpg";
+import productPaoAlho from "@/assets/product-images/18-pao-de-alho.jpg";
+import productBatataFrita from "@/assets/product-images/19-porcao-de-batata-frita.jpg";
+import productSanduiche from "@/assets/product-images/20-sanduiche-de-presunto-e-queijo.jpg";
+import productRefriLata from "@/assets/product-images/21-refrigerante-em-lata.jpg";
+import productRefri600 from "@/assets/product-images/22-refrigerante-600ml.jpg";
+import productAguaMineral from "@/assets/product-images/23-agua-mineral.jpg";
+import productAguaGas from "@/assets/product-images/24-agua-com-gas.jpg";
+import productSucoNatural from "@/assets/product-images/25-suco-natural.jpg";
 import { toast } from "sonner";
 
 import { QuantityStepper } from "./QuantityStepper";
@@ -55,6 +64,16 @@ function localProductImage(product: Pick<Product, "name" | "category">) {
     if (has("prato")) return productPrato;
     if (has("queijo coalho")) return productQueijoCoalho;
   }
+
+  if (has("linguica na chapa", "linguiça na chapa")) return productLinguicaChapa;
+  if (has("pao de alho", "pão de alho")) return productPaoAlho;
+  if (has("batata frita", "porcao de batata")) return productBatataFrita;
+  if (has("sanduiche de presunto e queijo", "sanduíche de presunto e queijo")) return productSanduiche;
+  if (has("refrigerante em lata", "refrigerante lata")) return productRefriLata;
+  if (has("refrigerante 600ml", "refrigerante 600 ml")) return productRefri600;
+  if (has("agua mineral", "água mineral")) return productAguaMineral;
+  if (has("agua com gas", "água com gás")) return productAguaGas;
+  if (has("suco natural", "suco")) return productSucoNatural;
 
   if (c.includes("salame") || n.includes("salame")) {
     if (has("fatiado", "fatiada")) return productSalameFatiado;
