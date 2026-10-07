@@ -110,9 +110,10 @@ function AdminProductsPage() {
 
   const categories = useMemo(() => {
     const dynamic = new Set(products.map((p) => p.category));
-    return Array.from(new Set([...PRODUCT_CATEGORIES, ...dynamic])).sort((a, b) =>
+    const all = Array.from(new Set([...PRODUCT_CATEGORIES, ...dynamic])).sort((a, b) =>
       a.localeCompare(b, "pt-BR"),
     );
+    return ["Espetinhos", ...all.filter((name) => name !== "Espetinhos")];
   }, [products]);
 
   const visible = useMemo(() => {
@@ -127,6 +128,7 @@ function AdminProductsPage() {
     });
 
     list.sort((a, b) => {
+      if (a.featured !== b.featured) return a.featured ? -1 : 1;
       switch (sort) {
         case "name-asc":
           return a.name.localeCompare(b.name, "pt-BR");
@@ -217,6 +219,10 @@ function AdminProductsPage() {
         </label>
       </div>
 
+      <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
+        <button type="button" onClick={() => setCategory("all")} className={category === "all" ? "shrink-0 rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground" : "shrink-0 rounded-full bg-secondary px-3 py-1.5 text-xs font-semibold text-secondary-foreground"}>Todas</button>
+        {categories.map((c) => <button key={c} type="button" onClick={() => setCategory(c)} className={category === c ? "shrink-0 rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground" : "shrink-0 rounded-full bg-secondary px-3 py-1.5 text-xs font-semibold text-secondary-foreground"}>{c === "Espetinhos" ? "★ Espetinhos" : c}</button>)}
+      </div>
       <p className="mt-4 text-sm text-muted-foreground">
         {visible.length} produto(s) exibido(s) de {products.length}.
       </p>
