@@ -11,6 +11,9 @@ import { STORES, localBusinessSchema } from "@/lib/site";
 import heroImg from "@/assets/Homepage.png";
 import localImg from "@/assets/loja-interior.jpg";
 import varietyImg from "@/assets/deli-variety.png";
+import homeFallbackImg from "@/assets/espetinhos.jpg";
+import sectionFallbackImg from "@/assets/frios.jpg";
+import varietyFallbackImg from "@/assets/atacado.jpg";
 
 const description =
   "América Frios em Palmas: frios, queijos, carnes, embutidos e outros produtos para sua casa ou negócio.";
@@ -72,6 +75,10 @@ function Index() {
           width={1536}
           height={864}
           className="absolute inset-0 h-full w-full object-cover"
+          onError={(event) => {
+            event.currentTarget.onerror = null;
+            event.currentTarget.src = homeFallbackImg;
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-charcoal/75 via-charcoal/35 to-transparent" />
         <div className="container-page relative py-16 md:py-24">
@@ -131,7 +138,16 @@ function Index() {
 
       <section className="border-y border-border bg-secondary/60 py-16">
         <div className="container-page grid gap-10 lg:grid-cols-2 lg:items-center">
-          <img src={localImg} alt="Espaço da América Frios para consumo no local" loading="lazy" className="aspect-4/3 w-full rounded-lg object-cover" />
+          <img
+            src={localImg}
+            alt="Espaço da América Frios para consumo no local"
+            loading="lazy"
+            className="aspect-4/3 w-full rounded-lg object-cover"
+            onError={(event) => {
+              event.currentTarget.onerror = null;
+              event.currentTarget.src = sectionFallbackImg;
+            }}
+          />
           <div>
             <p className="text-sm font-bold tracking-widest text-primary uppercase">Experiência na loja</p>
             <h2 className="mt-2 font-display text-2xl md:text-3xl">Consumo no local</h2>
@@ -156,7 +172,16 @@ function Index() {
             </p>
             <a href="https://www.instagram.com/americafriospalmas/" target="_blank" rel="noopener noreferrer" className="btn-base btn-brand mt-6"><Instagram className="h-4 w-4" /> Ver Instagram</a>
           </div>
-          <img src={varietyImg} alt="Variedade de produtos alimentícios da América Frios" loading="lazy" className="aspect-16/9 w-full rounded-lg object-cover" />
+          <img
+            src={varietyImg}
+            alt="Variedade de produtos alimentícios da América Frios"
+            loading="lazy"
+            className="aspect-16/9 w-full rounded-lg object-cover"
+            onError={(event) => {
+              event.currentTarget.onerror = null;
+              event.currentTarget.src = varietyFallbackImg;
+            }}
+          />
         </div>
       </section>
 
