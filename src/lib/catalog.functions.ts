@@ -46,6 +46,55 @@ export const getCatalog = createServerFn({ method: "GET" }).handler(
 
     const rows = (data ?? []).filter((r) => r.slug && Number(r.price ?? 0) > 0);
 
+    // Prefer the dedicated product photos committed in public/produtos.
+    // Matching is based on the database product name/category, so each catalog
+    // item gets its corresponding photo without changing commercial data.
+    const normalize = (value: string | null | undefined) =>
+      (value ?? "")
+        .normalize("NFD")
+        .replace(/[\\u0300-\\u036f]/g, "")
+        .toLowerCase()
+        .trim();
+
+    const productImagePath = (name: string, category: string) => {
+      const n = normalize(name);
+      const c = normalize(category);
+      const is = (...terms: string[]) => terms.some((term) => n.includes(normalize(term)));
+
+      if (c.includes("espetinho") || n.includes("espetinho")) {
+        if (is("carne")) return "/produtos/01-espetinhos-de-carne.jpg";
+        if (is("frango")) return "/produtos/02-espetinhos-de-frango.jpg";
+        if (is("linguica", "linguiça")) return "/produtos/03-espetinhos-de-linguica.jpg";
+        if (is("coracao", "coração")) return "/produtos/04-espetinhos-de-coracao.jpg";
+        if (is("queijo coalho")) return "/produtos/05-espetinhos-de-queijo-coalho.jpg";
+        if (is("bacon")) return "/produtos/06-espetinhos-de-bacon.jpg";
+      }
+
+      if (c.includes("linguica") || c.includes("linguiça")) {
+        if (is("toscana")) return "/produtos/07-linguica-toscana.jpg";
+        if (is("calabresa")) return "/produtos/08-linguica-calabresa.jpg";
+        if (is("defumada")) return "/produtos/09-linguica-defumada.jpg";
+      }
+
+      if (c.includes("presunto") || n.includes("presunto")) {
+        if (is("fatiado", "fatiada", "fatiad")) return "/produtos/11-presunto-fatiado.jpg";
+        return "/produtos/10-presunto.jpg";
+      }
+
+      if (c.includes("queijo") || n.includes("queijo")) {
+        if (is("mussarela", "muçarela", "mucarela")) return "/produtos/12-queijo-mussarela.jpg";
+        if (is("prato")) return "/produtos/13-queijo-prato.jpg";
+        if (is("queijo coalho")) return "/produtos/14-queijo-coalho.jpg";
+      }
+
+      if (c.includes("salame") || n.includes("salame")) {
+        if (is("fatiado", "fatiada", "fatiad")) return "/produtos/16-salame-fatiado.jpg";
+        if (is("italiano")) return "/produtos/15-salame-italiano.jpg";
+      }
+
+      return null;
+    };
+
     // Product images are public storefront assets. image_url stores the path
     // inside the product-images bucket, so use stable public URLs instead of
     // expiring signed URLs that depend on authenticated storage access.
@@ -67,7 +116,7 @@ export const getCatalog = createServerFn({ method: "GET" }).handler(
         wholesale,
         wholesaleMin: Number(r.wholesale_min ?? 1) || 1,
         category: r.category,
-        image: imageUrl(r.image_url),
+        image: productImagePath(r.name, r.category) ?? imageUrl(r.image_url),
         description: r.description,
         featured: r.featured,
       };
