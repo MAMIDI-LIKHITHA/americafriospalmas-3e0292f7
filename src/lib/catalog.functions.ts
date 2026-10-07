@@ -49,7 +49,7 @@ export const getCatalog = createServerFn({ method: "GET" }).handler(
     // ProductRow resolves the bundled storefront images from src/assets/product-images.
     const imageUrl = (value: string | null) => {
       if (!value) return null;
-      if (/^https?:\\/\\//i.test(value)) return value;
+      if (/^https?:\/\//i.test(value)) return value;
       return supabase.storage.from("product-images").getPublicUrl(value).data.publicUrl;
     };
 
