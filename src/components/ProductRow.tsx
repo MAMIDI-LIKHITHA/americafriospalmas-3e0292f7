@@ -35,44 +35,45 @@ import type { Product } from "@/lib/products";
 const normalize = (value: string) =>
   value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 
-function localProductImage(product: Pick<Product, "name" | "category">) {
-  const n = normalize(product.name);
-  const c = normalize(product.category);
-  const has = (...terms: string[]) => terms.some((term) => n.includes(normalize(term)));
+function localProductImage(product: Pick<Product, "id" | "name" | "category">) {
+  // Use the database slug + product name + category together. This is important
+  // because some database names differ slightly from the source image filenames.
+  const key = normalize(`${product.id} ${product.name} ${product.category}`);
+  const has = (...terms: string[]) => terms.some((term) => key.includes(normalize(term)));
 
-  // Match specific products by name first so generic categories cannot steal an image.
-  if (has("sanduiche de presunto e queijo")) return productSanduiche;
-  if (has("linguica na chapa")) return productLinguicaChapa;
-  if (has("pao de alho")) return productPaoAlho;
-  if (has("porcao de batata frita", "batata frita")) return productBatataFrita;
-  if (has("refrigerante em lata", "refrigerante lata")) return productRefriLata;
-  if (has("refrigerante 600ml", "refrigerante 600 ml")) return productRefri600;
-  if (has("agua mineral")) return productAguaMineral;
-  if (has("agua com gas")) return productAguaGas;
-  if (has("suco natural")) return productSucoNatural;
+  // Every source photo has one dedicated rule. Specific matches come first so
+  // products such as "Sanduíche de Presunto e Queijo" never receive the generic
+  // presunto photo.
+  if (has("sanduiche de presunto e queijo", "sanduiche-presunto-queijo")) return productSanduiche;
+  if (has("linguica na chapa", "linguica-na-chapa")) return productLinguicaChapa;
+  if (has("pao de alho", "pao-de-alho")) return productPaoAlho;
+  if (has("porcao de batata frita", "batata-frita")) return productBatataFrita;
+  if (has("refrigerante em lata", "refrigerante-em-lata")) return productRefriLata;
+  if (has("refrigerante 600ml", "refrigerante-600ml")) return productRefri600;
+  if (has("agua mineral", "agua-mineral")) return productAguaMineral;
+  if (has("agua com gas", "agua-com-gas")) return productAguaGas;
+  if (has("suco natural", "suco-natural")) return productSucoNatural;
 
-  if (has("espetinho")) {
-    if (has("carne")) return productCarne;
-    if (has("frango")) return productFrango;
-    if (has("linguica")) return productLinguicaEspetinho;
-    if (has("coracao")) return productCoracao;
-    if (has("queijo coalho")) return productQueijoEspetinho;
-    if (has("bacon")) return productBacon;
-  }
+  if (has("espetinho de carne", "espetinho-carne")) return productCarne;
+  if (has("espetinho de frango", "espetinho-frango")) return productFrango;
+  if (has("espetinho de linguica", "espetinho-linguica")) return productLinguicaEspetinho;
+  if (has("espetinho de coracao", "espetinho-coracao")) return productCoracao;
+  if (has("espetinho de queijo coalho", "espetinho-queijo-coalho")) return productQueijoEspetinho;
+  if (has("espetinho de bacon", "espetinho-bacon")) return productBacon;
 
-  if (has("linguica toscana")) return productToscana;
-  if (has("linguica calabresa")) return productCalabresa;
-  if (has("linguica defumada")) return productDefumada;
+  if (has("linguica toscana", "linguica-toscana")) return productToscana;
+  if (has("linguica calabresa", "linguica-calabresa")) return productCalabresa;
+  if (has("linguica defumada", "linguica-defumada")) return productDefumada;
 
-  if (has("presunto fatiado", "presunto fatiada")) return productPresuntoFatiado;
-  if (has("presunto") || c.includes("presunto")) return productPresunto;
+  if (has("presunto fatiado", "presunto-fatiado")) return productPresuntoFatiado;
+  if (has("presunto")) return productPresunto;
 
-  if (has("queijo mussarela", "mussarela")) return productMussarela;
-  if (has("queijo prato")) return productPrato;
-  if (has("queijo coalho")) return productQueijoCoalho;
+  if (has("queijo mussarela", "mussarela", "queijo-mussarela")) return productMussarela;
+  if (has("queijo prato", "queijo-prato")) return productPrato;
+  if (has("queijo coalho", "queijo-coalho")) return productQueijoCoalho;
 
-  if (has("salame italiano")) return productSalameItaliano;
-  if (has("salame fatiado", "salame fatiada")) return productSalameFatiado;
+  if (has("salame italiano", "salame-italiano")) return productSalameItaliano;
+  if (has("salame fatiado", "salame-fatiado")) return productSalameFatiado;
 
   return null;
 }
