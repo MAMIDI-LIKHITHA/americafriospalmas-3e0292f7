@@ -36,47 +36,68 @@ const normalize = (value: string) =>
   value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 
 function localProductImage(product: Pick<Product, "id" | "name" | "category">) {
-  // Use the database slug + product name + category together. This is important
-  // because some database names differ slightly from the source image filenames.
   const key = normalize(`${product.id} ${product.name} ${product.category}`);
   const has = (...terms: string[]) => terms.some((term) => key.includes(normalize(term)));
 
-  // Every source photo has one dedicated rule. Specific matches come first so
-  // products such as "Sanduíche de Presunto e Queijo" never receive the generic
-  // presunto photo.
+  // Highly specific products first.
   if (has("sanduiche de presunto e queijo", "sanduiche-presunto-queijo")) return productSanduiche;
   if (has("linguica na chapa", "linguica-na-chapa")) return productLinguicaChapa;
   if (has("pao de alho", "pao-de-alho")) return productPaoAlho;
   if (has("porcao de batata frita", "batata-frita")) return productBatataFrita;
   if (has("refrigerante em lata", "refrigerante-em-lata")) return productRefriLata;
-  if (has("refrigerante 600ml", "refrigerante-600ml")) return productRefri600;
+  if (has("refrigerante 600ml", "refrigerante-600ml", "600 ml")) return productRefri600;
   if (has("agua mineral", "agua-mineral")) return productAguaMineral;
-  if (has("agua com gas", "agua-com-gas")) return productAguaGas;
+  if (has("agua com gas", "agua-com-gas", "agua gas")) return productAguaGas;
   if (has("suco natural", "suco-natural")) return productSucoNatural;
 
-  if (has("espetinho de alcatra", "espetinho-alcatra", "alcatra")) return productCarne;\n  if (has("espetinho de contra file", "espetinho-contra-file", "contra file", "contrafile")) return productCarne;\n  if (has("espetinho de costelinha suina", "espetinho-costelinha-suina", "costelinha suina")) return productCarne;\n  if (has("espetinho de cupim", "espetinho-cupim", "cupim")) return productCarne;
-  if (has("espetinho de carne", "espetinho-carne")) return productCarne;
-  if (has("espetinho de frango", "espetinho-frango")) return productFrango;
+  // Espetinhos / meats.
+  if (has(
+    "espetinho de alcatra", "espetinho-alcatra", "alcatra",
+    "espetinho de contra file", "espetinho-contra-file", "contra file", "contrafile",
+    "espetinho de costelinha suina", "espetinho-costelinha-suina", "costelinha suina",
+    "espetinho de cupim", "espetinho-cupim", "cupim",
+    "espetinho de carne", "espetinho-carne",
+    "picanha", "maminha", "fraldinha", "ancho", "file mignon", "coxao"
+  )) return productCarne;
+  if (has("espetinho de frango", "espetinho-frango", "espetinho frango")) return productFrango;
   if (has("espetinho de linguica", "espetinho-linguica")) return productLinguicaEspetinho;
-  if (has("espetinho de coracao", "espetinho-coracao")) return productCoracao;
+  if (has("espetinho de coracao", "espetinho-coracao", "coracao de frango")) return productCoracao;
   if (has("espetinho de queijo coalho", "espetinho-queijo-coalho")) return productQueijoEspetinho;
   if (has("espetinho de bacon", "espetinho-bacon")) return productBacon;
 
-  if (has("linguica toscana", "linguica-toscana")) return productToscana;
-  if (has("linguica calabresa", "linguica-calabresa")) return productCalabresa;
-  if (has("linguica defumada", "linguica-defumada")) return productDefumada;
+  // Sausages / processed meats.
+  if (has("linguica toscana", "linguica-toscana", "toscana")) return productToscana;
+  if (has("linguica calabresa", "linguica-calabresa", "calabresa")) return productCalabresa;
+  if (has("linguica defumada", "linguica-defumada", "defumada")) return productDefumada;
+  if (has("linguica", "linguiça", "salsicha", "embutido")) return productLinguicaEspetinho;
 
-  if (has("presunto fatiado", "presunto-fatiado")) return productPresuntoFatiado;
-  if (has("presunto")) return productPresunto;
+  // Hams.
+  if (has("presunto fatiado", "presunto-fatiado", "presunto em fatias")) return productPresuntoFatiado;
+  if (has("presunto", "apresuntado", "peito de peru")) return productPresunto;
 
-  if (has("queijo mussarela", "mussarela", "queijo-mussarela")) return productMussarela;
+  // Cheeses.
+  if (has("queijo mussarela", "mussarela", "mucarela", "muçarela", "queijo-mussarela")) return productMussarela;
   if (has("queijo prato", "queijo-prato")) return productPrato;
   if (has("queijo coalho", "queijo-coalho")) return productQueijoCoalho;
+  if (has("queijo", "queijos")) return productMussarela;
 
+  // Salami.
   if (has("salame italiano", "salame-italiano")) return productSalameItaliano;
-  if (has("salame fatiado", "salame-fatiado")) return productSalameFatiado;
+  if (has("salame fatiado", "salame-fatiado", "salame")) return productSalameFatiado;
 
-  return null;
+  // Category-level fallback prevents newly added products from showing blank.
+  const category = normalize(product.category);
+  if (category.includes("espetinho")) return productCarne;
+  if (category.includes("carne")) return productCarne;
+  if (category.includes("frango")) return productFrango;
+  if (category.includes("linguica") || category.includes("embutido")) return productLinguicaEspetinho;
+  if (category.includes("queijo")) return productMussarela;
+  if (category.includes("presunto") || category.includes("frios")) return productPresunto;
+  if (category.includes("salame")) return productSalameFatiado;
+  if (category.includes("bebida")) return productRefriLata;
+  if (category.includes("congelado")) return productBatataFrita;
+
+  return product.image ?? productPresunto;
 }
 
 export function ProductRow({ product }: { product: Product }) {
@@ -86,7 +107,7 @@ export function ProductRow({ product }: { product: Product }) {
   const { price, wholesaleApplied } = unitPriceFor(product, qty, mode);
 
   // Resolve bundled Vite assets on the client. This avoids runtime/public/remote URL failures.
-  const imageSource = localProductImage(product) ?? product.image;
+  const imageSource = localProductImage(product) ?? product.image ?? productPresunto;
   const showImage = Boolean(imageSource) && !imageFailed;
 
   return (
