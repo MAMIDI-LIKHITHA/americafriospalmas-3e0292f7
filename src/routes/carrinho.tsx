@@ -19,6 +19,8 @@ import {
 } from "@/lib/order";
 import { STORES, WHATSAPP_NUMBERS } from "@/lib/site";
 import { supabase } from "@/integrations/supabase/client";
+import { PhoneOtpLogin } from "@/components/PhoneOtpLogin";
+import { displayBrPhone } from "@/lib/phone";
 
 const description =
   "Finalize seu pedido de frios, embutidos, suínos, frangos e espetinhos na América Frios Palmas: informe seus dados, escolha entrega ou retirada e envie o resumo pelo WhatsApp para confirmação.";
@@ -63,20 +65,21 @@ function CarrinhoPage() {
       if (data.session) {
         const { data: profile } = await supabase
           .from("profiles")
-          .select("name, phone, address")
+          .select("name, phone, address, complement, neighborhood, city, cep")
           .eq("id", data.session.user.id)
           .maybeSingle();
-        if (profile) {
-          setForm((current) => ({
-            ...current,
-            name: profile.name || current.name,
-            phone: profile.phone || current.phone,
-            address: profile.address || current.address,
-          }));
-        }
+        const fullAddress = profile
+          ? [profile.address, profile.complement, profile.neighborhood, profile.city, profile.cep].filter(Boolean).join(", ")
+          : "";
+        setForm((current) => ({
+          ...current,
+          name: profile?.name || current.name,
+          phone: displayBrPhone(data.session!.user.phone) || profile?.phone || current.phone,
+          address: fullAddress || current.address,
+        }));
       }
     });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => setAuthenticated(Boolean(session)));
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => { setAuthenticated(Boolean(session)); if (event === "SIGNED_IN" && session) setForm((f) => ({ ...f, phone: displayBrPhone(session.user.phone) || f.phone })); });
     return () => listener.subscription.unsubscribe();
   }, []);
   const submitOrder = useServerFn(createOrder);
@@ -212,6 +215,11 @@ function CarrinhoPage() {
           </section>
 
           {/* Checkout */}
+          {!authenticated ? (
+            <div className="h-fit">
+              <PhoneOtpLogin title="Entre para finalizar" subtitle="Confirme seu WhatsApp para enviar o pedido. Seu carrinho continua salvo." />
+            </div>
+          ) : (
           <form onSubmit={submit} noValidate className="card-surface h-fit p-5">
             <h2 className="font-display text-lg font-bold">Seus dados</h2>
 
@@ -337,6 +345,7 @@ function CarrinhoPage() {
               {sending ? "Enviando pedido…" : `Enviar pedido · subtotal estimado ${brl(total)}`}
             </button>
           </form>
+          )}
         </div>
       )}
     </div>
