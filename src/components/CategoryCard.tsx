@@ -16,7 +16,7 @@ export function CategoryCard({
 
   return (
     <article className="card-surface flex flex-col overflow-hidden" id={category.slug}>
-      <div className="relative aspect-4/3 overflow-hidden bg-muted">
+      <div className="relative aspect-[16/7] overflow-hidden bg-muted">
         {category.image ? (
           <img
             src={category.image}
@@ -43,11 +43,12 @@ export function CategoryCard({
         </span>
       </div>
       <div className="flex flex-1 flex-col gap-3 p-5">
+        {category.name === "Espetinhos" && <div className="inline-flex w-fit items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground"><span aria-hidden="true">★</span> Mais pedidos</div>}
         <h3 className="font-display text-lg font-bold">{category.name}</h3>
         <p className="text-sm text-muted-foreground">{category.description}</p>
 
         {showProducts ? (
-          <div className="mt-1">
+          <div className="mt-1 rounded-xl border border-border/70 bg-background/60 px-3 sm:px-4">
             {category.products.map((p) => (
               <ProductRow key={p.id} product={p} />
             ))}
