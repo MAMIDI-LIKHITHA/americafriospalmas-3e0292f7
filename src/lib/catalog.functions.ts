@@ -62,34 +62,34 @@ export const getCatalog = createServerFn({ method: "GET" }).handler(
       const is = (...terms: string[]) => terms.some((term) => n.includes(normalize(term)));
 
       if (c.includes("espetinho") || n.includes("espetinho")) {
-        if (is("carne")) return "/produtos/01-espetinhos-de-carne.jpg";
-        if (is("frango")) return "/produtos/02-espetinhos-de-frango.jpg";
-        if (is("linguica", "linguiça")) return "/produtos/03-espetinhos-de-linguica.jpg";
-        if (is("coracao", "coração")) return "/produtos/04-espetinhos-de-coracao.jpg";
-        if (is("queijo coalho")) return "/produtos/05-espetinhos-de-queijo-coalho.jpg";
-        if (is("bacon")) return "/produtos/06-espetinhos-de-bacon.jpg";
+        if (is("carne")) return "/product-images/01-espetinhos-de-carne.jpg";
+        if (is("frango")) return "/product-images/02-espetinhos-de-frango.jpg";
+        if (is("linguica", "linguiça")) return "/product-images/03-espetinhos-de-linguica.jpg";
+        if (is("coracao", "coração")) return "/product-images/04-espetinhos-de-coracao.jpg";
+        if (is("queijo coalho")) return "/product-images/05-espetinhos-de-queijo-coalho.jpg";
+        if (is("bacon")) return "/product-images/06-espetinhos-de-bacon.jpg";
       }
 
       if (c.includes("linguica") || c.includes("linguiça")) {
-        if (is("toscana")) return "/produtos/07-linguica-toscana.jpg";
-        if (is("calabresa")) return "/produtos/08-linguica-calabresa.jpg";
-        if (is("defumada")) return "/produtos/09-linguica-defumada.jpg";
+        if (is("toscana")) return "/product-images/07-linguica-toscana.jpg";
+        if (is("calabresa")) return "/product-images/08-linguica-calabresa.jpg";
+        if (is("defumada")) return "/product-images/09-linguica-defumada.jpg";
       }
 
       if (c.includes("presunto") || n.includes("presunto")) {
-        if (is("fatiado", "fatiada", "fatiad")) return "/produtos/11-presunto-fatiado.jpg";
-        return "/produtos/10-presunto.jpg";
+        if (is("fatiado", "fatiada", "fatiad")) return "/product-images/11-presunto-fatiado.jpg";
+        return "/product-images/10-presunto.jpg";
       }
 
       if (c.includes("queijo") || n.includes("queijo")) {
-        if (is("mussarela", "muçarela", "mucarela")) return "/produtos/12-queijo-mussarela.jpg";
-        if (is("prato")) return "/produtos/13-queijo-prato.jpg";
-        if (is("queijo coalho")) return "/produtos/14-queijo-coalho.jpg";
+        if (is("mussarela", "muçarela", "mucarela")) return "/product-images/12-queijo-mussarela.jpg";
+        if (is("prato")) return "/product-images/13-queijo-prato.jpg";
+        if (is("queijo coalho")) return "/product-images/14-queijo-coalho.jpg";
       }
 
       if (c.includes("salame") || n.includes("salame")) {
-        if (is("fatiado", "fatiada", "fatiad")) return "/produtos/16-salame-fatiado.jpg";
-        if (is("italiano")) return "/produtos/15-salame-italiano.jpg";
+        if (is("fatiado", "fatiada", "fatiad")) return "/product-images/16-salame-fatiado.jpg";
+        if (is("italiano")) return "/product-images/15-salame-italiano.jpg";
       }
 
       return null;
