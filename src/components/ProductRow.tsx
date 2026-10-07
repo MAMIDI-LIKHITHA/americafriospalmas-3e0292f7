@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import { QuantityStepper } from "./QuantityStepper";
 import { useCart, unitPriceFor } from "@/lib/cart";
 import { brl } from "@/lib/order";
-import { CATEGORY_META } from "@/lib/products";
 import type { Product } from "@/lib/products";
 
 export function ProductRow({ product }: { product: Product }) {
@@ -14,8 +13,7 @@ export function ProductRow({ product }: { product: Product }) {
   const [imageFailed, setImageFailed] = useState(false);
   const { price, wholesaleApplied } = unitPriceFor(product, qty, mode);
 
-  const categoryImage = CATEGORY_META.find((category) => category.name === product.category)?.image ?? null;
-  const imageSource = product.image ?? categoryImage;
+  const imageSource = product.image;
   const showImage = Boolean(imageSource) && !imageFailed;
 
   return (
@@ -25,12 +23,12 @@ export function ProductRow({ product }: { product: Product }) {
           src={imageSource!}
           alt={product.name}
           loading="lazy"
-          className="aspect-square w-full rounded-lg object-cover sm:h-24 sm:w-24"
+          className="aspect-square w-full rounded-lg object-cover sm:h-20 sm:w-20"
           onError={() => setImageFailed(true)}
         />
       ) : (
         <div
-          className="flex aspect-square w-full items-center justify-center rounded-lg bg-muted text-muted-foreground sm:h-24 sm:w-24"
+          className="flex aspect-square w-full items-center justify-center rounded-lg bg-muted text-muted-foreground sm:h-20 sm:w-20"
           aria-label={`Imagem de ${product.name} indisponível`}
         >
           <ImageIcon className="h-6 w-6" />
