@@ -79,7 +79,7 @@ function CarrinhoPage() {
         }));
       }
     });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => setAuthenticated(Boolean(session)));
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => { setAuthenticated(Boolean(session)); if (event === "SIGNED_IN" && session) setForm((f) => ({ ...f, phone: displayBrPhone(session.user.phone) || f.phone })); });
     return () => listener.subscription.unsubscribe();
   }, []);
   const submitOrder = useServerFn(createOrder);
@@ -215,6 +215,11 @@ function CarrinhoPage() {
           </section>
 
           {/* Checkout */}
+          {!authenticated ? (
+            <div className="h-fit">
+              <PhoneOtpLogin title="Entre para finalizar" subtitle="Confirme seu WhatsApp para enviar o pedido. Seu carrinho continua salvo." />
+            </div>
+          ) : (
           <form onSubmit={submit} noValidate className="card-surface h-fit p-5">
             <h2 className="font-display text-lg font-bold">Seus dados</h2>
 
@@ -340,6 +345,7 @@ function CarrinhoPage() {
               {sending ? "Enviando pedido…" : `Enviar pedido · subtotal estimado ${brl(total)}`}
             </button>
           </form>
+          )}
         </div>
       )}
     </div>

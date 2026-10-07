@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { Menu, UserRound, X } from "lucide-react";
 
 import logo from "@/assets/logo.png";
@@ -17,6 +18,12 @@ const NAV = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSignedIn(Boolean(data.session)));
+    const { data } = supabase.auth.onAuthStateChange((_e, s) => setSignedIn(Boolean(s)));
+    return () => data.subscription.unsubscribe();
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/80 bg-background/95 backdrop-blur">
@@ -58,10 +65,11 @@ export function SiteHeader() {
           </Link>
           <Link
             to="/conta"
-            aria-label="Minha conta"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:border-primary hover:text-primary"
+            aria-label={signedIn ? "Minha conta" : "Entrar"}
+            className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full border border-border px-3 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
           >
             <UserRound className="h-5 w-5" />
+            <span className="hidden sm:inline">{signedIn ? "Minha conta" : "Entrar"}</span>
           </Link>
           <CartButton />
 
