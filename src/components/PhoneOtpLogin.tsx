@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { MessageSquareText } from "lucide-react";
 
+import type { GoTrueClient } from "@supabase/auth-js";
 import { supabase } from "@/integrations/supabase/client";
+
+const auth = supabase.auth as unknown as GoTrueClient;
 import { maskBrPhone, normalizeBrPhone } from "@/lib/phone";
 
 const RESEND_SECONDS = 60;
@@ -45,7 +48,7 @@ export function PhoneOtpLogin({
     setLoading(true);
     setError("");
     try {
-      const { error: err } = await supabase.auth.signInWithOtp({ phone: target, options: { channel: "sms" } });
+      const { error: err } = await auth.signInWithOtp({ phone: target, options: { channel: "sms" } });
       if (err) {
         setError(otpErrorMessage(err.message, "send"));
         return false;
@@ -83,7 +86,7 @@ export function PhoneOtpLogin({
     setLoading(true);
     setError("");
     try {
-      const { error: err } = await supabase.auth.verifyOtp({ phone: e164, token: code, type: "sms" });
+      const { error: err } = await auth.verifyOtp({ phone: e164, token: code, type: "sms" });
       if (err) {
         setError(otpErrorMessage(err.message, "verify"));
         return;
