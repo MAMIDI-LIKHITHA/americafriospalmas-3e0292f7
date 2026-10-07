@@ -58,12 +58,6 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <Link
-            to="/admin/login"
-            className="hidden rounded-full border border-border px-3 py-1.5 text-sm font-semibold text-foreground/80 hover:text-primary sm:inline-flex"
-          >
-            Área admin
-          </Link>
-          <Link
             to="/conta"
             aria-label={signedIn ? "Minha conta" : "Entrar"}
             className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full border border-border px-3 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
@@ -99,13 +93,6 @@ export function SiteHeader() {
                 {item.label}
               </Link>
             ))}
-            <Link
-              to="/admin/login"
-              onClick={() => setOpen(false)}
-              className="py-2.5 text-base font-semibold text-muted-foreground"
-            >
-              Área admin
-            </Link>
           </nav>
         </div>
       )}
