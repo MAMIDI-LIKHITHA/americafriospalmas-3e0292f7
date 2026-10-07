@@ -1,7 +1,7 @@
-import type { AuthClient } from "@supabase/auth-js";
+import type { GoTrueClient } from "@supabase/auth-js";
 import { supabase } from "@/integrations/supabase/client";
 
-const auth = supabase.auth as unknown as AuthClient;
+const auth = supabase.auth as unknown as GoTrueClient;
 
 /** Returns true only when the current session belongs to an admin user. */
 export async function isCurrentUserAdmin(): Promise<boolean> {
