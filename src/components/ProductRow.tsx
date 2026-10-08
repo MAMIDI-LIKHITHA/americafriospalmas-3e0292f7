@@ -25,8 +25,17 @@ import productRefri600 from "@/assets/product-images/22-refrigerante-600ml.jpg";
 import productAguaMineral from "@/assets/product-images/23-agua-mineral.jpg";
 import productAguaGas from "@/assets/product-images/24-agua-com-gas.jpg";
 import productSucoNatural from "@/assets/product-images/25-suco-natural.jpg";
-import { toast } from "sonner";
 
+// Uploaded Congelados catalog images.
+import frozenBolinhaQueijo from "@/assets/product-images/América FRIOS Bolinha de Queijo Showcase.png";
+import frozenCoxinhaFrango from "@/assets/product-images/América FRIOS Coxinha de Frango Feast.png";
+import frozenRissolé from "@/assets/product-images/América FRIOS Rissolé Snack Showcase.png";
+import frozenBolinhaNapolitana from "@/assets/product-images/América Frios Bolinha Napolitana Ad.png";
+import frozenCoxinhaPackaging from "@/assets/product-images/Coxinha de Frango Packaging Advertisement.png";
+import frozenCoxinhaPromo from "@/assets/product-images/Coxinha de Frango Promo Pack.png";
+import frozenChurros from "@/assets/product-images/Mini Churros Dulce de Leche Promo.png";
+
+import { toast } from "sonner";
 import { QuantityStepper } from "./QuantityStepper";
 import { useCart, unitPriceFor } from "@/lib/cart";
 import { brl } from "@/lib/order";
@@ -38,8 +47,15 @@ const normalize = (value: string) =>
 function localProductImage(product: Pick<Product, "id" | "name" | "category" | "image">) {
   const id = normalize(product.id);
 
-  // Prefer stable product IDs/slugs over editable names. This prevents published builds
-  // from falling back to the same category image when an admin changes a product name.
+  // Uploaded Congelados images — match the product name/slug explicitly.
+  if (id.includes("bolinha-de-queijo") || id.includes("bolinha-queijo")) return frozenBolinhaQueijo;
+  if (id.includes("bolinha-napolitana")) return frozenBolinhaNapolitana;
+  if (id.includes("coxinha-de-frango-com-requeijao") || id.includes("coxinha-frango-requeijao")) return frozenCoxinhaFrango;
+  if (id.includes("coxinha-de-frango") || id.includes("coxinha-frango")) return frozenCoxinhaPackaging;
+  if (id.includes("bolinha-de-milho-com-alho-poro") || id.includes("bolinha-milho-alho-poro")) return frozenRissolé;
+  if (id.includes("mini-churros-de-doce-de-leite") || id.includes("mini-churros-doce-de-leite")) return frozenChurros;
+
+  // Existing bundled products.
   if (id.includes("sanduiche-de-presunto-e-queijo") || id.includes("sanduiche-presunto-queijo")) return productSanduiche;
   if (id.includes("linguica-na-chapa")) return productLinguicaChapa;
   if (id.includes("pao-de-alho")) return productPaoAlho;
@@ -50,7 +66,6 @@ function localProductImage(product: Pick<Product, "id" | "name" | "category" | "
   if (id.includes("agua-com-gas")) return productAguaGas;
   if (id.includes("suco-natural")) return productSucoNatural;
 
-  // Espetinhos: use the numbered bundled assets deterministically.
   if (id.includes("espetinho-de-carne") || id.includes("espetinho-carne")) return productCarne;
   if (id.includes("espetinho-de-frango") || id.includes("espetinho-frango")) return productFrango;
   if (id.includes("espetinho-de-linguica") || id.includes("espetinho-linguica")) return productLinguicaEspetinho;
@@ -61,7 +76,13 @@ function localProductImage(product: Pick<Product, "id" | "name" | "category" | "
   const key = normalize(`${product.id} ${product.name} ${product.category}`);
   const has = (...terms: string[]) => terms.some((term) => key.includes(normalize(term)));
 
-  // Highly specific products first.
+  if (has("bolinha de queijo", "bolinha-queijo")) return frozenBolinhaQueijo;
+  if (has("bolinha napolitana", "bolinha-napolitana")) return frozenBolinhaNapolitana;
+  if (has("coxinha de frango com requeijao", "coxinha-frango-requeijao")) return frozenCoxinhaFrango;
+  if (has("coxinha de frango", "coxinha-frango")) return frozenCoxinhaPackaging;
+  if (has("bolinha de milho com alho-poro", "bolinha-milho-alho-poro")) return frozenRissolé;
+  if (has("mini churros de doce de leite", "mini-churros-doce-de-leite")) return frozenChurros;
+
   if (has("sanduiche de presunto e queijo", "sanduiche-presunto-queijo")) return productSanduiche;
   if (has("linguica na chapa", "linguica-na-chapa")) return productLinguicaChapa;
   if (has("pao de alho", "pao-de-alho")) return productPaoAlho;
@@ -72,42 +93,29 @@ function localProductImage(product: Pick<Product, "id" | "name" | "category" | "
   if (has("agua com gas", "agua-com-gas", "agua gas")) return productAguaGas;
   if (has("suco natural", "suco-natural")) return productSucoNatural;
 
-  // Espetinhos / meats.
-  if (has(
-    "espetinho de alcatra", "espetinho-alcatra", "alcatra",
-    "espetinho de contra file", "espetinho-contra-file", "contra file", "contrafile",
-    "espetinho de costelinha suina", "espetinho-costelinha-suina", "costelinha suina",
-    "espetinho de cupim", "espetinho-cupim", "cupim",
-    "espetinho de carne", "espetinho-carne",
-    "picanha", "maminha", "fraldinha", "ancho", "file mignon", "coxao"
-  )) return productCarne;
+  if (has("espetinho de alcatra", "espetinho-alcatra", "alcatra", "espetinho de contra file", "espetinho-contra-file", "contra file", "contrafile", "espetinho de costelinha suina", "espetinho-costelinha-suina", "costelinha suina", "espetinho de cupim", "espetinho-cupim", "cupim", "espetinho de carne", "espetinho-carne", "picanha", "maminha", "fraldinha", "ancho", "file mignon", "coxao")) return productCarne;
   if (has("espetinho de frango", "espetinho-frango", "espetinho frango")) return productFrango;
   if (has("espetinho de linguica", "espetinho-linguica")) return productLinguicaEspetinho;
   if (has("espetinho de coracao", "espetinho-coracao", "coracao de frango")) return productCoracao;
   if (has("espetinho de queijo coalho", "espetinho-queijo-coalho")) return productQueijoEspetinho;
   if (has("espetinho de bacon", "espetinho-bacon")) return productBacon;
 
-  // Sausages / processed meats.
   if (has("linguica toscana", "linguica-toscana", "toscana")) return productToscana;
   if (has("linguica calabresa", "linguica-calabresa", "calabresa")) return productCalabresa;
   if (has("linguica defumada", "linguica-defumada", "defumada")) return productDefumada;
   if (has("linguica", "linguiça", "salsicha", "embutido")) return productLinguicaEspetinho;
 
-  // Hams.
   if (has("presunto fatiado", "presunto-fatiado", "presunto em fatias")) return productPresuntoFatiado;
   if (has("presunto", "apresuntado", "peito de peru")) return productPresunto;
 
-  // Cheeses.
   if (has("queijo mussarela", "mussarela", "mucarela", "muçarela", "queijo-mussarela")) return productMussarela;
   if (has("queijo prato", "queijo-prato")) return productPrato;
   if (has("queijo coalho", "queijo-coalho")) return productQueijoCoalho;
   if (has("queijo", "queijos")) return productMussarela;
 
-  // Salami.
   if (has("salame italiano", "salame-italiano")) return productSalameItaliano;
   if (has("salame fatiado", "salame-fatiado", "salame")) return productSalameFatiado;
 
-  // Category-level fallback prevents newly added products from showing blank.
   const category = normalize(product.category);
   if (category.includes("espetinho")) return productCarne;
   if (category.includes("carne")) return productCarne;
@@ -128,8 +136,6 @@ export function ProductRow({ product }: { product: Product }) {
   const [imageFailed, setImageFailed] = useState(false);
   const { price, wholesaleApplied } = unitPriceFor(product, qty, mode);
 
-  // Admin-uploaded images have priority. If an old/broken stored URL fails,
-  // immediately fall back to the bundled storefront image instead of showing a blank card.
   const imageSource = product.image ?? localProductImage(product) ?? productPresunto;
   const fallbackImage = localProductImage({ ...product, image: null }) ?? productPresunto;
   const displayImage = imageFailed ? fallbackImage : imageSource;
@@ -146,10 +152,7 @@ export function ProductRow({ product }: { product: Product }) {
           onError={() => setImageFailed(true)}
         />
       ) : (
-        <div
-          className="flex aspect-square w-full items-center justify-center bg-muted text-muted-foreground"
-          aria-label={`Imagem de ${product.name} indisponível`}
-        >
+        <div className="flex aspect-square w-full items-center justify-center bg-muted text-muted-foreground" aria-label={`Imagem de ${product.name} indisponível`}>
           <ImageIcon className="h-6 w-6" />
         </div>
       )}
@@ -165,30 +168,17 @@ export function ProductRow({ product }: { product: Product }) {
         {product.description && <p className="mt-1 text-sm text-muted-foreground">{product.description}</p>}
         <p className="text-sm text-muted-foreground">
           <span className="font-bold text-foreground">{brl(price)}</span> / {product.unit}
-          {wholesaleApplied && (
-            <span className="ml-1 text-xs font-semibold text-primary">· preço de atacado aplicado</span>
-          )}
+          {wholesaleApplied && <span className="ml-1 text-xs font-semibold text-primary">· preço de atacado aplicado</span>}
         </p>
-        {mode === "varejo" && (
-          <p className="text-xs text-muted-foreground">
-            Varejo: {brl(product.retail)} / {product.unit}
-          </p>
-        )}
+        {mode === "varejo" && <p className="text-xs text-muted-foreground">Varejo: {brl(product.retail)} / {product.unit}</p>}
         {mode === "atacado" && !wholesaleApplied && (
-          <p className="text-xs text-muted-foreground">
-            Atacado: {brl(product.wholesale)} / {product.unit} · mínimo de {product.wholesaleMin}{" "}
-            {product.unit}{product.unit === "unidade" ? "s" : ""}
-          </p>
+          <p className="text-xs text-muted-foreground">Atacado: {brl(product.wholesale)} / {product.unit} · mínimo de {product.wholesaleMin} {product.unit}{product.unit === "unidade" ? "s" : ""}</p>
         )}
         {mode === "atacado" && wholesaleApplied && (
-          <p className="text-xs text-muted-foreground">
-            Atacado aplicado a partir de {product.wholesaleMin} {product.unit}
-            {product.unit === "unidade" ? "s" : ""}.
-          </p>
+          <p className="text-xs text-muted-foreground">Atacado aplicado a partir de {product.wholesaleMin} {product.unit}{product.unit === "unidade" ? "s" : ""}.</p>
         )}
         <p className="mt-auto pt-2 text-[11px] text-muted-foreground">
-          O valor exibido é por {product.unit}. Para produtos vendidos por peso, o valor final pode
-          variar conforme a quantidade pesada e será confirmado pelo WhatsApp.
+          O valor exibido é por {product.unit}. Para produtos vendidos por peso, o valor final pode variar conforme a quantidade pesada e será confirmado pelo WhatsApp.
         </p>
       </div>
       <div className="flex flex-col gap-2 border-t border-border p-4">
@@ -196,16 +186,7 @@ export function ProductRow({ product }: { product: Product }) {
           <QuantityStepper value={qty} onChange={setQty} />
           <span className="text-xs text-muted-foreground">Quantidade</span>
         </div>
-        <button
-          type="button"
-          onClick={() => {
-            add(product.id, qty);
-            setQty(1);
-            setDrawerOpen(true);
-            toast.success(`${product.name} adicionado ao carrinho`);
-          }}
-          className="btn-base btn-brand w-full justify-center px-4 py-2 text-sm"
-        >
+        <button type="button" onClick={() => { add(product.id, qty); setQty(1); setDrawerOpen(true); toast.success(`${product.name} adicionado ao carrinho`); }} className="btn-base btn-brand w-full justify-center px-4 py-2 text-sm">
           <ShoppingCart className="h-4 w-4" />
           Adicionar
         </button>
