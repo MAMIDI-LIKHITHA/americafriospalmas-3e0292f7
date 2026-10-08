@@ -149,8 +149,7 @@ export function ProductRow({ product }: { product: Product }) {
   const [imageFailed, setImageFailed] = useState(false);
   const { price, wholesaleApplied } = unitPriceFor(product, qty, mode);
 
-  const imageSource = product.image ?? localProductImage(product) ?? productPresunto;
-  const fallbackImage = localProductImage({ ...product, image: null }) ?? productPresunto;
+  // Prefer bundled catalog artwork for products with an explicit local mapping.\n  // This prevents an older Supabase image_url from overriding the newly assigned images.\n  const mappedImage = localProductImage({ ...product, image: null });\n  const imageSource = mappedImage ?? product.image ?? productPresunto;\n  const fallbackImage = mappedImage ?? product.image ?? productPresunto;
   const displayImage = imageFailed ? fallbackImage : imageSource;
   const showImage = Boolean(displayImage);
 
