@@ -3,7 +3,7 @@ import frios from "@/assets/frios.jpg";
 import embutidos from "@/assets/embutidos.jpg";
 import suinos from "@/assets/suinos.jpg";
 import frangos from "@/assets/frangos.jpg";
-import espetinhos from "@/assets/espetinhos.jpg";
+import espetinhos from "@/assets/espetinhos-brasil.jpg";
 import atacado from "@/assets/atacado.jpg";
 import categoryQueijos from "@/assets/Queijos — Cheese.png";
 import categoryPresuntos from "@/assets/Presuntos — Ham.png";
