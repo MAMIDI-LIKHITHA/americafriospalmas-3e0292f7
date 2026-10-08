@@ -35,7 +35,7 @@ import type { Product } from "@/lib/products";
 const normalize = (value: string) =>
   value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 
-function localProductImage(product: Pick<Product, "id" | "name" | "category">) {
+function localProductImage(product: Pick<Product, "id" | "name" | "category" | "image">) {
   const key = normalize(`${product.id} ${product.name} ${product.category}`);
   const has = (...terms: string[]) => terms.some((term) => key.includes(normalize(term)));
 
