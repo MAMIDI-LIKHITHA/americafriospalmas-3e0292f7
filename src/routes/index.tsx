@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Star, Store, MessageCircle, PackageCheck, Sparkles, Utensils, Instagram, Gift } from "lucide-react";
+import { Star, Store, MessageCircle, PackageCheck, Sparkles, Utensils, Instagram, Gift, Coffee } from "lucide-react";
 
 import { CategoryCard } from "@/components/CategoryCard";
 import { EspetinhosShowcase } from "@/components/EspetinhosShowcase";
@@ -145,6 +145,39 @@ function Index() {
             >
               Ver Kit Festa
             </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="container-page pb-8 md:pb-10">
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-card px-6 py-7 shadow-sm md:px-10 md:py-9">
+          <div className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full bg-primary/5" />
+          <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div className="flex items-start gap-4">
+              <span className="mt-1 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <Coffee className="h-6 w-6" />
+              </span>
+              <div>
+                <p className="text-xs font-bold tracking-[0.18em] uppercase text-primary">
+                  Disponível na América Frios
+                </p>
+                <h2 className="mt-1 font-display text-2xl md:text-3xl">Mochi Café</h2>
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
+                  Café Mochi disponível para compra na América Frios.
+                </p>
+                <p className="mt-2 text-xs font-semibold text-primary">
+                  Ponto de Venda: América Frios
+                </p>
+              </div>
+            </div>
+            <a
+              href="https://www.instagram.com/americafriospalmas/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-base btn-outline-brand shrink-0"
+            >
+              Saiba Mais
+            </a>
           </div>
         </div>
       </section>
