@@ -14,6 +14,17 @@ import varietyImg from "@/assets/deli-variety.png";
 import homeFallbackImg from "@/assets/espetinhos.jpg";
 import sectionFallbackImg from "@/assets/frios.jpg";
 import varietyFallbackImg from "@/assets/atacado.jpg";
+import homepageFriosImg from "@/assets/frios.jpg";
+import homepageQueijosImg from "@/assets/Queijos — Cheese.png";
+import homepagePresuntosImg from "@/assets/Presuntos — Ham.png";
+import homepageSalamesImg from "@/assets/Salames — Salami.png";
+
+const HOMEPAGE_CATEGORY_IMAGES: Record<string, string> = {
+  frios: homepageFriosImg,
+  queijos: homepageQueijosImg,
+  presuntos: homepagePresuntosImg,
+  salames: homepageSalamesImg,
+};
 
 const description =
   "América Frios em Palmas: frios, queijos, carnes, embutidos e outros produtos para sua casa ou negócio.";
@@ -131,7 +142,11 @@ function Index() {
 
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((c) => (
-            <CategoryCard key={c.name} category={c} />
+            <CategoryCard
+              key={c.name}
+              category={c}
+              homepageImage={HOMEPAGE_CATEGORY_IMAGES[c.slug]}
+            />
           ))}
         </div>
       </section>
