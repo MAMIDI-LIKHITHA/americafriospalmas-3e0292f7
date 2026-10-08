@@ -72,9 +72,14 @@ export async function uploadProductImage(file: File) {
   const path = `products/${crypto.randomUUID()}.${ext}`;
   const { error } = await supabase.storage
     .from("product-images")
-    .upload(path, file, { contentType: file.type, upsert: false });
-  if (error) throw new Error("Não foi possível enviar a imagem.");
-  return path;
+    .upload(path, file, { contentType: file.type, upsert: false, cacheControl: "31536000" });
+  if (error) throw new Error(error.message || "Não foi possível enviar a imagem.");
+
+  // Store the complete public URL in products.image_url so the storefront
+  // does not depend on a second Storage URL conversion step.
+  const { data } = supabase.storage.from("product-images").getPublicUrl(path);
+  if (!data.publicUrl) throw new Error("Não foi possível gerar a URL pública da imagem.");
+  return data.publicUrl;
 }
 
 /** Creates or updates a product. Enforced admin-only by RLS on public.products. */
@@ -129,5 +134,8 @@ export async function resolveProductImageUrl(imageUrl: string | null) {
   if (!imageUrl) return null;
   if (/^https?:\/\//i.test(imageUrl)) return imageUrl;
 
-  return supabase.storage.from("product-images").getPublicUrl(imageUrl).data.publicUrl;
-}
+  const cleanPath = imageUrl
+    .replace(/^\/+/, "")
+    .replace(/^product-images\/+?/i, "");
+
+  return supabase.storage.from("product-images").getPublicUrl(cleanPath).data.publicUrl;
