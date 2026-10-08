@@ -128,15 +128,18 @@ export function ProductRow({ product }: { product: Product }) {
   const [imageFailed, setImageFailed] = useState(false);
   const { price, wholesaleApplied } = unitPriceFor(product, qty, mode);
 
-  // Resolve bundled Vite assets on the client. This avoids runtime/public/remote URL failures.
+  // Admin-uploaded images have priority. If an old/broken stored URL fails,
+  // immediately fall back to the bundled storefront image instead of showing a blank card.
   const imageSource = product.image ?? localProductImage(product) ?? productPresunto;
-  const showImage = Boolean(imageSource) && !imageFailed;
+  const fallbackImage = localProductImage({ ...product, image: null }) ?? productPresunto;
+  const displayImage = imageFailed ? fallbackImage : imageSource;
+  const showImage = Boolean(displayImage);
 
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md">
       {showImage ? (
         <img
-          src={imageSource!}
+          src={displayImage!}
           alt={product.name}
           loading="lazy"
           className="aspect-square w-full object-cover"
