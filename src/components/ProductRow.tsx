@@ -129,7 +129,7 @@ export function ProductRow({ product }: { product: Product }) {
   const { price, wholesaleApplied } = unitPriceFor(product, qty, mode);
 
   // Resolve bundled Vite assets on the client. This avoids runtime/public/remote URL failures.
-  const imageSource = localProductImage(product) ?? product.image ?? productPresunto;
+  const imageSource = product.image ?? localProductImage(product) ?? productPresunto;
   const showImage = Boolean(imageSource) && !imageFailed;
 
   return (
