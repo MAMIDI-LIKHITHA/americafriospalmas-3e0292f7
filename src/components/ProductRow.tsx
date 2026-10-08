@@ -36,6 +36,28 @@ const normalize = (value: string) =>
   value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 
 function localProductImage(product: Pick<Product, "id" | "name" | "category" | "image">) {
+  const id = normalize(product.id);
+
+  // Prefer stable product IDs/slugs over editable names. This prevents published builds
+  // from falling back to the same category image when an admin changes a product name.
+  if (id.includes("sanduiche-de-presunto-e-queijo") || id.includes("sanduiche-presunto-queijo")) return productSanduiche;
+  if (id.includes("linguica-na-chapa")) return productLinguicaChapa;
+  if (id.includes("pao-de-alho")) return productPaoAlho;
+  if (id.includes("porcao-de-batata-frita") || id.includes("batata-frita")) return productBatataFrita;
+  if (id.includes("refrigerante-em-lata")) return productRefriLata;
+  if (id.includes("refrigerante-600ml")) return productRefri600;
+  if (id.includes("agua-mineral")) return productAguaMineral;
+  if (id.includes("agua-com-gas")) return productAguaGas;
+  if (id.includes("suco-natural")) return productSucoNatural;
+
+  // Espetinhos: use the numbered bundled assets deterministically.
+  if (id.includes("espetinho-de-carne") || id.includes("espetinho-carne")) return productCarne;
+  if (id.includes("espetinho-de-frango") || id.includes("espetinho-frango")) return productFrango;
+  if (id.includes("espetinho-de-linguica") || id.includes("espetinho-linguica")) return productLinguicaEspetinho;
+  if (id.includes("espetinho-de-coracao") || id.includes("espetinho-coracao")) return productCoracao;
+  if (id.includes("espetinho-de-queijo-coalho") || id.includes("espetinho-queijo-coalho")) return productQueijoEspetinho;
+  if (id.includes("espetinho-de-bacon") || id.includes("espetinho-bacon")) return productBacon;
+
   const key = normalize(`${product.id} ${product.name} ${product.category}`);
   const has = (...terms: string[]) => terms.some((term) => key.includes(normalize(term)));
 
