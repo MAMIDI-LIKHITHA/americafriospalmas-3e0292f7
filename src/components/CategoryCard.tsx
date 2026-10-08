@@ -25,20 +25,24 @@ function getCategoryFallback(category: Category) {
 export function CategoryCard({
   category,
   showProducts = false,
+  homepageImage,
 }: {
   category: Category;
   showProducts?: boolean;
+  /** Optional homepage-only bundled image. */
+  homepageImage?: string;
 }) {
   const from = Math.min(...category.products.map((p) => p.retail));
   const fallbackImage = getCategoryFallback(category);
+  const displayImage = homepageImage ?? category.image;
 
   return (
     <article className={showProducts ? "space-y-4" : "card-surface flex flex-col overflow-hidden"} id={category.slug}>
       {!showProducts && (
         <div className="relative aspect-[16/7] overflow-hidden bg-muted">
-          {category.image ? (
+          {displayImage ? (
             <img
-              src={category.image}
+              src={displayImage}
               alt={`${category.name} — América Frios`}
               width={1024}
               height={768}
@@ -46,6 +50,11 @@ export function CategoryCard({
               className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
               onError={(event) => {
                 const image = event.currentTarget;
+                if (homepageImage) {
+                  image.style.display = "none";
+                  image.nextElementSibling?.classList.remove("hidden");
+                  return;
+                }
                 if (image.dataset["fallbackApplied"] === "true") {
                   image.style.display = "none";
                   image.nextElementSibling?.classList.remove("hidden");
@@ -57,7 +66,7 @@ export function CategoryCard({
             />
           ) : null}
           <div
-            className={`absolute inset-0 flex flex-col items-center justify-center gap-2 bg-muted text-muted-foreground ${category.image ? "hidden" : ""}`}
+            className={`absolute inset-0 flex flex-col items-center justify-center gap-2 bg-muted text-muted-foreground ${displayImage ? "hidden" : ""}`}
             aria-label={`Imagem de ${category.name} indisponível`}
           >
             <ImageIcon className="h-8 w-8" />
