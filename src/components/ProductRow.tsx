@@ -32,7 +32,6 @@ import frozenCoxinhaFrango from "@/assets/product-images/América FRIOS Coxinha 
 import frozenRissolé from "@/assets/product-images/América FRIOS Rissolé Snack Showcase.png";
 import frozenBolinhaNapolitana from "@/assets/product-images/América Frios Bolinha Napolitana Ad.png";
 import frozenCoxinhaPackaging from "@/assets/product-images/Coxinha de Frango Packaging Advertisement.png";
-import frozenCoxinhaPromo from "@/assets/product-images/Coxinha de Frango Promo Pack.png";
 import frozenChurros from "@/assets/product-images/Mini Churros Dulce de Leche Promo.png";
 
 import { toast } from "sonner";
@@ -46,6 +45,11 @@ const normalize = (value: string) =>
 
 function localProductImage(product: Pick<Product, "id" | "name" | "category" | "image">) {
   const id = normalize(product.id);
+
+  // Mochi Café products sold at América Frios.
+  if (id.includes("cafe-especial") || id.includes("cafe-84-pontos") || id.includes("mochi-cafe-especial")) return mochaCafeEspecial;
+  if (id.includes("cafe-moido") || id.includes("tradicional-superior")) return mochaCafeMoido;
+  if (id.includes("cafe-em-graos") || id.includes("cafe-graos") || id.includes("cafe-em-grao")) return mochaCafeGraos;
 
   // Uploaded Congelados images — match the product name/slug explicitly.
   if (id.includes("bolinha-de-queijo") || id.includes("bolinha-queijo")) return frozenBolinhaQueijo;
@@ -76,6 +80,9 @@ function localProductImage(product: Pick<Product, "id" | "name" | "category" | "
   const key = normalize(`${product.id} ${product.name} ${product.category}`);
   const has = (...terms: string[]) => terms.some((term) => key.includes(normalize(term)));
 
+  if (has("cafe especial", "84 pontos", "mochi cafe especial")) return mochaCafeEspecial;
+  if (has("cafe moido", "tradicional superior")) return mochaCafeMoido;
+  if (has("cafe em graos", "cafe graos", "grao tradicional superior")) return mochaCafeGraos;
   if (has("bolinha de queijo", "bolinha-queijo")) return frozenBolinhaQueijo;
   if (has("bolinha napolitana", "bolinha-napolitana")) return frozenBolinhaNapolitana;
   if (has("coxinha de frango com requeijao", "coxinha-frango-requeijao")) return frozenCoxinhaFrango;
