@@ -46,7 +46,7 @@ export function CategoryCard({
               className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
               onError={(event) => {
                 const image = event.currentTarget;
-                if (image.dataset.fallbackApplied === "true") {
+                if (image.dataset["fallbackApplied"] === "true") {
                   image.style.display = "none";
                   image.nextElementSibling?.classList.remove("hidden");
                   return;
