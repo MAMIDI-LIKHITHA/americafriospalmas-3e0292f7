@@ -37,6 +37,7 @@ import frozenCoxinhaFrango from "@/assets/product-images/América FRIOS Coxinha 
 import frozenRissolé from "@/assets/product-images/América FRIOS Rissolé Snack Showcase.png";
 import frozenBolinhaNapolitana from "@/assets/product-images/América Frios Bolinha Napolitana Ad.png";
 import frozenCoxinhaPackaging from "@/assets/product-images/Coxinha de Frango Packaging Advertisement.png";
+import frozenCoxinhaPromo from "@/assets/product-images/Coxinha de Frango Promo Pack.png";
 import frozenChurros from "@/assets/product-images/Mini Churros Dulce de Leche Promo.png";
 
 import { toast } from "sonner";
@@ -60,7 +61,7 @@ function localProductImage(product: Pick<Product, "id" | "name" | "category" | "
   if (id.includes("bolinha-de-queijo") || id.includes("bolinha-queijo")) return frozenBolinhaQueijo;
   if (id.includes("bolinha-napolitana")) return frozenBolinhaNapolitana;
   if (id.includes("coxinha-de-frango-com-requeijao") || id.includes("coxinha-frango-requeijao")) return frozenCoxinhaFrango;
-  if (id.includes("coxinha-de-frango") || id.includes("coxinha-frango")) return frozenCoxinhaPackaging;
+  if (id.includes("coxinha-de-frango") || id.includes("coxinha-frango")) return frozenCoxinhaPromo;
   if (id.includes("bolinha-de-milho-com-alho-poro") || id.includes("bolinha-milho-alho-poro")) return frozenRissolé;
   if (id.includes("mini-churros-de-doce-de-leite") || id.includes("mini-churros-doce-de-leite")) return frozenChurros;
 
@@ -91,7 +92,7 @@ function localProductImage(product: Pick<Product, "id" | "name" | "category" | "
   if (has("bolinha de queijo", "bolinha-queijo")) return frozenBolinhaQueijo;
   if (has("bolinha napolitana", "bolinha-napolitana")) return frozenBolinhaNapolitana;
   if (has("coxinha de frango com requeijao", "coxinha-frango-requeijao")) return frozenCoxinhaFrango;
-  if (has("coxinha de frango", "coxinha-frango")) return frozenCoxinhaPackaging;
+  if (has("coxinha de frango", "coxinha-frango")) return frozenCoxinhaPromo;
   if (has("bolinha de milho com alho-poro", "bolinha-milho-alho-poro")) return frozenRissolé;
   if (has("mini churros de doce de leite", "mini-churros-doce-de-leite")) return frozenChurros;
 
