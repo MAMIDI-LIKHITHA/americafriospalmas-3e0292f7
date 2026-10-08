@@ -14,16 +14,22 @@ import varietyImg from "@/assets/deli-variety.png";
 import homeFallbackImg from "@/assets/espetinhos.jpg";
 import sectionFallbackImg from "@/assets/frios.jpg";
 import varietyFallbackImg from "@/assets/atacado.jpg";
+import homepageEspetinhosImg from "@/assets/espetinhos-brasil.jpg";
 import homepageFriosImg from "@/assets/frios.jpg";
 import homepageQueijosImg from "@/assets/Queijos — Cheese.png";
 import homepagePresuntosImg from "@/assets/Presuntos — Ham.png";
 import homepageSalamesImg from "@/assets/Salames — Salami.png";
+import homepageEmbutidosImg from "@/assets/embutidos.jpg";
+import homepageLinguicasImg from "@/assets/Linguiças — Sausages.png";
 
 const HOMEPAGE_CATEGORY_IMAGES: Record<string, string> = {
+  espetinhos: homepageEspetinhosImg,
   frios: homepageFriosImg,
   queijos: homepageQueijosImg,
   presuntos: homepagePresuntosImg,
   salames: homepageSalamesImg,
+  embutidos: homepageEmbutidosImg,
+  linguicas: homepageLinguicasImg,
 };
 
 const description =
