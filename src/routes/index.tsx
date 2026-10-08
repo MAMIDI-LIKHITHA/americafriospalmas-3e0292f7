@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Star, Store, MessageCircle, PackageCheck, Sparkles, Utensils, Instagram } from "lucide-react";
+import { Star, Store, MessageCircle, PackageCheck, Sparkles, Utensils, Instagram, Gift } from "lucide-react";
 
 import { CategoryCard } from "@/components/CategoryCard";
 import { EspetinhosShowcase } from "@/components/EspetinhosShowcase";
@@ -113,6 +113,38 @@ function Index() {
               Ver Produtos
             </Link>
             <WhatsAppButton size="lg" label="Falar no WhatsApp" />
+          </div>
+        </div>
+      </section>
+
+      <section className="container-page py-8 md:py-10">
+        <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-primary px-6 py-7 text-primary-foreground shadow-sm md:px-10 md:py-9">
+          <div className="pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full bg-primary-foreground/10" />
+          <div className="pointer-events-none absolute -bottom-16 left-1/3 h-40 w-40 rounded-full bg-primary-foreground/5" />
+          <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div className="flex items-start gap-4">
+              <span className="mt-1 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary-foreground/15">
+                <Gift className="h-6 w-6" />
+              </span>
+              <div>
+                <p className="text-xs font-bold tracking-[0.18em] uppercase text-primary-foreground/75">
+                  Oferta especial
+                </p>
+                <h2 className="mt-1 font-display text-2xl md:text-3xl">Kit Festa · R$ 60,00</h2>
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-primary-foreground/85 md:text-base">
+                  Escolha até 3 sabores e ganhe 1,5L de Guaraná Antarctica. Perfeito para sua festa!
+                </p>
+                <p className="mt-2 text-xs text-primary-foreground/70">
+                  Empada não inclusa no kit.
+                </p>
+              </div>
+            </div>
+            <Link
+              to="/produtos"
+              className="btn-base shrink-0 bg-background px-5 py-3 text-center font-bold text-foreground hover:bg-background/90"
+            >
+              Ver Kit Festa
+            </Link>
           </div>
         </div>
       </section>
