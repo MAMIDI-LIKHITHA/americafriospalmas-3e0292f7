@@ -50,7 +50,10 @@ export const getCatalog = createServerFn({ method: "GET" }).handler(
     const imageUrl = (value: string | null) => {
       if (!value) return null;
       if (/^https?:\/\//i.test(value)) return value;
-      return supabase.storage.from("product-images").getPublicUrl(value).data.publicUrl;
+      const cleanPath = value
+        .replace(/^\/+/, "")
+        .replace(/^product-images\/+?/i, "");
+      return supabase.storage.from("product-images").getPublicUrl(cleanPath).data.publicUrl;
     };
 
     const byCategory = new Map<string, Product[]>();
