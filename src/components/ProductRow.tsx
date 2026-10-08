@@ -26,6 +26,11 @@ import productAguaMineral from "@/assets/product-images/23-agua-mineral.jpg";
 import productAguaGas from "@/assets/product-images/24-agua-com-gas.jpg";
 import productSucoNatural from "@/assets/product-images/25-suco-natural.jpg";
 
+// Mochi Café product images.
+import mochaCafeEspecial from "@/assets/product-images/Premium Brazilian Coffee Bag Still Life.png";
+import mochaCafeMoido from "@/assets/product-images/Premium Brazilian Coffee Bag.png";
+import mochaCafeGraos from "@/assets/product-images/Premium Brazilian Coffee Package.png";
+
 // Uploaded Congelados catalog images.
 import frozenBolinhaQueijo from "@/assets/product-images/América FRIOS Bolinha de Queijo Showcase.png";
 import frozenCoxinhaFrango from "@/assets/product-images/América FRIOS Coxinha de Frango Feast.png";
