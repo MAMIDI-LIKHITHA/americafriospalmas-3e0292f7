@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 
 import type { Category } from "@/lib/products";
-import espetinhosImg from "@/assets/espetinhos.jpg";
+import espetinhosImg from "@/assets/espetinhos-brasil.jpg";
 
 export function EspetinhosShowcase({ category }: { category: Category }) {
   const image = category.image ?? espetinhosImg;
@@ -12,6 +12,8 @@ export function EspetinhosShowcase({ category }: { category: Category }) {
           src={image}
           alt="Espetinhos América Frios"
           loading="lazy"
+          width={1536}
+          height={1024}
           className="aspect-16/10 w-full rounded-2xl object-cover shadow-lg"
         />
         <div>
