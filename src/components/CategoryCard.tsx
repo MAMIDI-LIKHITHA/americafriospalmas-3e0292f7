@@ -51,7 +51,7 @@ export function CategoryCard({
                   image.nextElementSibling?.classList.remove("hidden");
                   return;
                 }
-                image.dataset.fallbackApplied = "true";
+                image.dataset["fallbackApplied"] = "true";
                 image.src = fallbackImage;
               }}
             />
