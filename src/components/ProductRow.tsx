@@ -194,9 +194,6 @@ export function ProductRow({ product }: { product: Product }) {
         {mode === "atacado" && wholesaleApplied && (
           <p className="text-xs text-muted-foreground">Atacado aplicado a partir de {product.wholesaleMin} {product.unit}{product.unit === "unidade" ? "s" : ""}.</p>
         )}
-        <p className="mt-auto pt-2 text-[11px] text-muted-foreground">
-          O valor exibido é por {product.unit}. Para produtos vendidos por peso, o valor final pode variar conforme a quantidade pesada e será confirmado pelo WhatsApp.
-        </p>
       </div>
       <div className="flex flex-col gap-2 border-t border-border p-4">
         <div className="flex items-center gap-2">
