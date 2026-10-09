@@ -8,6 +8,8 @@ import { AdminShell } from "@/components/admin/AdminShell";
 import { ProductForm } from "@/components/admin/ProductForm";
 import { isCurrentUserAdmin } from "@/lib/admin";
 import { brl } from "@/lib/order";
+import { supabase } from "@/integrations/supabase/client";
+import { resolveImageUrls } from "@/lib/storage-images";
 import {
   PRODUCT_CATEGORIES,
   deactivateProduct,
