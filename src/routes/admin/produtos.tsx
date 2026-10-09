@@ -85,7 +85,7 @@ function AdminProductsPage() {
     void (async () => {
       const urls = await resolveImageUrls(supabase, products.map((p) => p.image_url));
       const map: Record<string, string | null> = {};
-      products.forEach((p, i) => { map[p.id] = urls[i]; });
+      products.forEach((p, i) => { map[p.id] = urls[i] ?? null; });
       if (!cancelled) setImageUrls(map);
     })();
 

@@ -11,7 +11,7 @@ const SIGN_SECONDS = 60 * 60 * 24 * 7; // 7 days
 export function toStoragePath(value: string | null | undefined): string | null {
   if (!value) return null;
   const m = value.match(/\/storage\/v1\/object\/(?:public|sign|authenticated)\/product-images\/([^?#]+)/i);
-  if (m) return decodeURIComponent(m[1]);
+  if (m?.[1]) return decodeURIComponent(m[1]);
   if (/^https?:\/\//i.test(value)) return null;
   return value.replace(/^\/+/, "").replace(/^product-images\/+/i, "");
 }
@@ -20,14 +20,14 @@ export function toStoragePath(value: string | null | undefined): string | null {
 export async function resolveImageUrls(
   client: SupabaseClient<any, any, any>,
   values: (string | null | undefined)[],
-): Promise<(string | null)[]> {
+): Promise<Array<string | null>> {
   const paths = Array.from(new Set(values.map(toStoragePath).filter((p): p is string => !!p)));
   const signed = new Map<string, string>();
   if (paths.length) {
     const { data } = await client.storage.from(BUCKET).createSignedUrls(paths, SIGN_SECONDS);
     for (const row of data ?? []) if (row.path && row.signedUrl) signed.set(row.path, row.signedUrl);
   }
-  return values.map((v) => {
+  return values.map((v): string | null => {
     if (!v) return null;
     const p = toStoragePath(v);
     if (p === null) return v; // external URL

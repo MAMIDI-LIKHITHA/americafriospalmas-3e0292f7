@@ -131,5 +131,5 @@ export async function fetchAdminProducts() {
 export async function resolveProductImageUrl(imageUrl: string | null) {
   if (!imageUrl) return null;
   const [url] = await resolveImageUrls(supabase, [imageUrl]);
-  return url;
+  return url ?? null;
 }
