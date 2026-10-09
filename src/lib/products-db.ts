@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { resolveImageUrls } from "@/lib/storage-images";
 
 export type AdminProduct = {
   id: string;
@@ -75,11 +76,8 @@ export async function uploadProductImage(file: File) {
     .upload(path, file, { contentType: file.type, upsert: false, cacheControl: "31536000" });
   if (error) throw new Error(error.message || "Não foi possível enviar a imagem.");
 
-  // Store the complete public URL in products.image_url so the storefront
-  // does not depend on a second Storage URL conversion step.
-  const { data } = supabase.storage.from("product-images").getPublicUrl(path);
-  if (!data.publicUrl) throw new Error("Não foi possível gerar a URL pública da imagem.");
-  return data.publicUrl;
+  // Store the bucket path; display URLs are signed on read (bucket is private).
+  return path;
 }
 
 /** Creates or updates a product. Enforced admin-only by RLS on public.products. */
@@ -132,11 +130,6 @@ export async function fetchAdminProducts() {
 /** Returns a stable public image URL for storefront/admin previews. */
 export async function resolveProductImageUrl(imageUrl: string | null) {
   if (!imageUrl) return null;
-  if (/^https?:\/\//i.test(imageUrl)) return imageUrl;
-
-  const cleanPath = imageUrl
-    .replace(/^\/+/, "")
-    .replace(/^product-images\/+?/i, "");
-
-  return supabase.storage.from("product-images").getPublicUrl(cleanPath).data.publicUrl;
+  const [url] = await resolveImageUrls(supabase, [imageUrl]);
+  return url ?? null;
 }

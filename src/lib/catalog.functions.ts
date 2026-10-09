@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 
 import type { Database } from "@/integrations/supabase/types";
+import { resolveImageUrls } from "@/lib/storage-images";
 import {
   CATEGORY_META,
   FALLBACK_CATEGORY_IMAGE,
@@ -46,15 +47,8 @@ export const getCatalog = createServerFn({ method: "GET" }).handler(
 
     const rows = (data ?? []).filter((r) => r.slug && Number(r.price ?? 0) > 0);
 
-    // ProductRow resolves the bundled storefront images from src/assets/product-images.
-    const imageUrl = (value: string | null) => {
-      if (!value) return null;
-      if (/^https?:\/\//i.test(value)) return value;
-      const cleanPath = value
-        .replace(/^\/+/, "")
-        .replace(/^product-images\/+?/i, "");
-      return supabase.storage.from("product-images").getPublicUrl(cleanPath).data.publicUrl;
-    };
+    const resolved = await resolveImageUrls(supabase, rows.map((r) => r.image_url));
+    const imageByRow = new Map(rows.map((r, i) => [r, resolved[i]]));
 
     const byCategory = new Map<string, Product[]>();
     for (const r of rows) {
@@ -68,7 +62,7 @@ export const getCatalog = createServerFn({ method: "GET" }).handler(
         wholesale,
         wholesaleMin: Number(r.wholesale_min ?? 1) || 1,
         category: r.category,
-        image: imageUrl(r.image_url),
+        image: imageByRow.get(r) ?? null,
         description: r.description,
         featured: r.featured,
       };
