@@ -139,3 +139,4 @@ export async function resolveProductImageUrl(imageUrl: string | null) {
     .replace(/^product-images\/+?/i, "");
 
   return supabase.storage.from("product-images").getPublicUrl(cleanPath).data.publicUrl;
+}
