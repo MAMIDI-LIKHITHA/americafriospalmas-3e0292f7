@@ -71,11 +71,6 @@ function ProdutosPage() {
       <h1 className="mt-2 max-w-3xl font-display text-3xl md:text-4xl">
         Produtos para todos os momentos
       </h1>
-      <p className="mt-4 max-w-2xl text-muted-foreground">
-        Monte seu pedido, escolha as quantidades e envie os dados pelo site. Depois, encaminhe o
-        resumo pelo WhatsApp para nossa equipe confirmar valores finais, disponibilidade e detalhes
-        da entrega ou retirada em loja.
-      </p>
       <div className="mt-6 flex flex-wrap items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 p-4">
         <ModeToggle />
         <p className="text-sm text-foreground/80">
