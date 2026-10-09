@@ -80,26 +80,10 @@ function AdminProductsPage() {
     if (products.length === 0) return;
 
     let cancelled = false;
-    const storagePaths = products
-      .filter((p) => p.image_url && !/^https?:\/\//i.test(p.image_url))
-      .map((p) => p.id);
-
-    if (storagePaths.length === 0) {
-      const external: Record<string, string | null> = {};
-      products.forEach((p) => {
-        external[p.id] = p.image_url;
-      });
-      setImageUrls(external);
-      return;
-    }
-
     void (async () => {
+      const urls = await resolveImageUrls(supabase, products.map((p) => p.image_url));
       const map: Record<string, string | null> = {};
-      await Promise.all(
-        products.map(async (p) => {
-          map[p.id] = await resolveProductImageUrl(p.image_url);
-        }),
-      );
+      products.forEach((p, i) => { map[p.id] = urls[i]; });
       if (!cancelled) setImageUrls(map);
     })();
 

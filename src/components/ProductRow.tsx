@@ -152,8 +152,9 @@ export function ProductRow({ product }: { product: Product }) {
   // Prefer bundled catalog artwork for products with an explicit local mapping.
   // This prevents an older Supabase image_url from overriding the newly assigned images.
   const mappedImage = localProductImage({ ...product, image: null });
-  const imageSource = mappedImage ?? product.image ?? productPresunto;
-  const fallbackImage = mappedImage ?? product.image ?? productPresunto;
+  // Precedence: uploaded image, then bundled product image, then generic fallback.
+  const imageSource = product.image ?? mappedImage ?? productPresunto;
+  const fallbackImage = mappedImage ?? productPresunto;
   const displayImage = imageFailed ? fallbackImage : imageSource;
   const showImage = Boolean(displayImage);
 

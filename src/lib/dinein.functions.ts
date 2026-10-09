@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 
 import type { Database } from "@/integrations/supabase/types";
+import { resolveImageUrls } from "@/lib/storage-images";
 
 export type PublicMenuItem = {
   id: string;
@@ -63,11 +64,8 @@ export const getDineInMenu = createServerFn({ method: "GET" }).handler(
 
     const rows = items ?? [];
 
-    const publicImageUrl = (value: string | null) => {
-      if (!value) return null;
-      if (/^https?:\/\//i.test(value)) return value;
-      return supabase.storage.from("product-images").getPublicUrl(value).data.publicUrl;
-    };
+    const resolved = await resolveImageUrls(supabase, rows.map((r) => r.image_url));
+    const imageById = new Map(rows.map((r, i) => [r.id, resolved[i]]));
 
     return (cats ?? []).map((c) => ({
       id: c.id,
@@ -81,11 +79,7 @@ export const getDineInMenu = createServerFn({ method: "GET" }).handler(
           name: i.name,
           description: i.description,
           price: Number(i.price ?? 0),
-          image: i.image_url
-            ? /^https?:\/\//i.test(i.image_url)
-              ? i.image_url
-              : publicImageUrl(i.image_url)
-            : null,
+          image: imageById.get(i.id) ?? null,
           available: i.available,
           featured: i.featured,
         })),
