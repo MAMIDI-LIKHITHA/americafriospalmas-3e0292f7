@@ -43,6 +43,36 @@ const HOMEPAGE_CATEGORY_IMAGES: Record<string, string> = {
   linguicas: homepageLinguicasImg,
 };
 
+const HOMEPAGE_CATEGORY_ORDER = [
+  "carnes",
+  "espetinhos",
+  "salgados",
+  "mochi-cafe",
+  "congelados",
+  "bebidas",
+  "frios",
+  "queijos",
+  "presuntos",
+  "salames",
+  "embutidos",
+  "linguicas",
+];
+
+const HOMEPAGE_CATEGORY_COLORS: Record<string, string> = {
+  carnes: "from-red-700 to-red-600",
+  espetinhos: "from-orange-600 to-red-500",
+  salgados: "from-amber-500 to-yellow-500",
+  "mochi-cafe": "from-amber-950 to-amber-800",
+  congelados: "from-blue-600 to-sky-500",
+  bebidas: "from-teal-700 to-teal-500",
+  frios: "from-slate-700 to-slate-600",
+  queijos: "from-yellow-600 to-amber-500",
+  presuntos: "from-rose-700 to-pink-600",
+  salames: "from-red-800 to-rose-700",
+  embutidos: "from-orange-800 to-amber-700",
+  linguicas: "from-red-700 to-orange-600",
+};
+
 const description =
   "América Frios em Palmas: frios, queijos, carnes, embutidos e outros produtos para sua casa ou negócio.";
 
@@ -87,6 +117,13 @@ const EXPERIENCES = [
 function Index() {
   const { data: categories } = useSuspenseQuery(catalogQueryOptions);
   const espetinhos = categories.find((c) => c.slug === "espetinhos" && c.products.length > 0);
+  const homepageCategories = [...categories].sort((a, b) => {
+    const aIndex = HOMEPAGE_CATEGORY_ORDER.indexOf(a.slug);
+    const bIndex = HOMEPAGE_CATEGORY_ORDER.indexOf(b.slug);
+    const aOrder = aIndex === -1 ? Number.MAX_SAFE_INTEGER : aIndex;
+    const bOrder = bIndex === -1 ? Number.MAX_SAFE_INTEGER : bIndex;
+    return aOrder - bOrder || a.name.localeCompare(b.name, "pt-BR");
+  });
 
   return (
     <div>
@@ -135,18 +172,10 @@ function Index() {
           <p className="mt-2 text-muted-foreground">Qualidade, sabor e praticidade para o seu dia a dia.</p>
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          {["carnes", "espetinhos", "salgados", "mochi-cafe", "congelados", "bebidas"].map((slug) => {
-            const category = categories.find((item) => item.slug === slug);
-            if (!category) return null;
+          {homepageCategories.map((category) => {
+            const slug = category.slug;
             const image = HOMEPAGE_CATEGORY_IMAGES[slug] ?? category.image;
-            const color = {
-              carnes: "from-red-700 to-red-600",
-              espetinhos: "from-orange-600 to-red-500",
-              salgados: "from-amber-500 to-yellow-500",
-              "mochi-cafe": "from-amber-950 to-amber-800",
-              congelados: "from-blue-600 to-sky-500",
-              bebidas: "from-teal-700 to-teal-500",
-            }[slug];
+            const color = HOMEPAGE_CATEGORY_COLORS[slug] ?? "from-primary to-primary/80";
             return (
               <Link
                 key={category.slug}
