@@ -10,6 +10,10 @@ import categoryPresuntos from "@/assets/Presuntos — Ham.png";
 import categorySalames from "@/assets/Salames — Salami.png";
 import categoryLinguicas from "@/assets/Linguiças — Sausages.png";
 
+// Imagem específica de café para a categoria Mochi Café na página inicial.
+const categoryMochiCafe =
+  "https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=900&q=85";
+
 export type Product = {
   /** slug do produto no banco — usado como identificador no carrinho e no checkout */
   id: string;
@@ -100,6 +104,12 @@ export const CATEGORY_META: {
     name: "Congelados",
     image: atacado,
     description: "Produtos congelados práticos para sua rotina.",
+  },
+  {
+    slug: "mochi-cafe",
+    name: "Mochi Café",
+    image: categoryMochiCafe,
+    description: "Cafés especiais em grãos e moídos para apreciar a qualquer hora.",
   },
   {
     slug: "outros",
