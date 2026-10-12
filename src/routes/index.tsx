@@ -21,18 +21,26 @@ import homepagePresuntosImg from "@/assets/Presuntos — Ham.png";
 import homepageSalamesImg from "@/assets/Salames — Salami.png";
 import homepageEmbutidosImg from "@/assets/embutidos.jpg";
 import homepageLinguicasImg from "@/assets/Linguiças — Sausages.png";
-const homepageMochiCafeImg =
-  "https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=1000&q=85";
+import homepageSalgadosImg from "@/assets/product-images/América FRIOS Bolinha de Queijo Showcase.png";
+import homepageCongeladosImg from "@/assets/product-images/América FRIOS Coxinha de Frango Feast.png";
+import homepageMochiCafeImg from "@/assets/product-images/Premium Brazilian Coffee Bag Still Life.png";
+
+const homepageBebidasImg =
+  "https://images.unsplash.com/photo-1532634896-26909d0d4b9e?auto=format&fit=crop&w=1000&q=85";
 
 const HOMEPAGE_CATEGORY_IMAGES: Record<string, string> = {
+  carnes: homepageFriosImg,
   espetinhos: homepageEspetinhosImg,
+  salgados: homepageSalgadosImg,
+  "mochi-cafe": homepageMochiCafeImg,
+  congelados: homepageCongeladosImg,
+  bebidas: homepageBebidasImg,
   frios: homepageFriosImg,
   queijos: homepageQueijosImg,
   presuntos: homepagePresuntosImg,
   salames: homepageSalamesImg,
   embutidos: homepageEmbutidosImg,
   linguicas: homepageLinguicasImg,
-  "mochi-cafe": homepageMochiCafeImg,
 };
 
 const description =
@@ -121,6 +129,61 @@ function Index() {
       </section>
 
       <section className="container-page py-8 md:py-10">
+        <div className="mb-5">
+          <p className="text-sm font-bold tracking-widest text-primary uppercase">Nossas categorias</p>
+          <h2 className="mt-2 font-display text-2xl md:text-3xl">Tudo o que você precisa, em um só lugar!</h2>
+          <p className="mt-2 text-muted-foreground">Qualidade, sabor e praticidade para o seu dia a dia.</p>
+        </div>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+          {["carnes", "espetinhos", "salgados", "mochi-cafe", "congelados", "bebidas"].map((slug) => {
+            const category = categories.find((item) => item.slug === slug);
+            if (!category) return null;
+            const image = HOMEPAGE_CATEGORY_IMAGES[slug] ?? category.image;
+            const color = {
+              carnes: "from-red-700 to-red-600",
+              espetinhos: "from-orange-600 to-red-500",
+              salgados: "from-amber-500 to-yellow-500",
+              "mochi-cafe": "from-amber-950 to-amber-800",
+              congelados: "from-blue-600 to-sky-500",
+              bebidas: "from-teal-700 to-teal-500",
+            }[slug];
+            return (
+              <Link
+                key={category.slug}
+                to="/produtos"
+                hash={category.slug}
+                className="group relative isolate aspect-[4/5] overflow-hidden rounded-xl bg-muted shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg"
+              >
+                {image && (
+                  <img
+                    src={image}
+                    alt={category.name}
+                    loading="lazy"
+                    width={640}
+                    height={800}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    onError={(event) => {
+                      event.currentTarget.style.display = "none";
+                    }}
+                  />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/5 to-transparent" />
+                <div className={`absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 bg-gradient-to-r ${color} px-3 py-3 text-white sm:px-4`}>
+                  <span className="text-sm font-bold sm:text-base">{category.name}</span>
+                  <span aria-hidden="true" className="text-xl leading-none transition-transform group-hover:translate-x-1">→</span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+        <div className="mt-5 text-right">
+          <Link to="/produtos" className="text-sm font-semibold text-primary hover:underline">
+            Ver todas as categorias →
+          </Link>
+        </div>
+      </section>
+
+      <section className="container-page py-8 md:py-10">
         <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-primary px-6 py-7 text-primary-foreground shadow-sm md:px-10 md:py-9">
           <div className="pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full bg-primary-foreground/10" />
           <div className="pointer-events-none absolute -bottom-16 left-1/3 h-40 w-40 rounded-full bg-primary-foreground/5" />
@@ -200,33 +263,7 @@ function Index() {
         </div>
       </section>
 
-      <section className="container-page py-16">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="text-sm font-bold tracking-widest text-primary uppercase">Categorias</p>
-            <h2 className="mt-2 font-display text-2xl md:text-3xl">Escolha por categoria</h2>
-          </div>
-          <Link to="/produtos" className="text-sm font-semibold text-primary hover:underline">
-            Ver catálogo completo →
-          </Link>
-        </div>
-        <p className="mt-3 max-w-2xl text-muted-foreground">
-          Veja os principais grupos de produtos e acesse o catálogo para montar seu pedido.
-        </p>
 
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map((c) => {
-            const homepageImage = HOMEPAGE_CATEGORY_IMAGES[c.slug];
-            return (
-              <CategoryCard
-                key={c.name}
-                category={c}
-                {...(homepageImage ? { homepageImage } : {})}
-              />
-            );
-          })}
-        </div>
-      </section>
 
       <section className="border-y border-border bg-secondary/60 py-16">
         <div className="container-page grid gap-10 lg:grid-cols-2 lg:items-center">
