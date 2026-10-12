@@ -22,7 +22,7 @@ import homepageSalamesImg from "@/assets/Salames — Salami.png";
 import homepageEmbutidosImg from "@/assets/embutidos.jpg";
 import homepageLinguicasImg from "@/assets/Linguiças — Sausages.png";
 const homepageMochiCafeImg =
-  "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1000&q=85";
+  "https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=1000&q=85";
 
 const HOMEPAGE_CATEGORY_IMAGES: Record<string, string> = {
   espetinhos: homepageEspetinhosImg,
