@@ -12,7 +12,7 @@ import categoryLinguicas from "@/assets/Linguiças — Sausages.png";
 
 // Imagem específica de café para a categoria Mochi Café na página inicial.
 const categoryMochiCafe =
-  "https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=900&q=85";
+  "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1000&q=85";
 
 export type Product = {
   /** slug do produto no banco — usado como identificador no carrinho e no checkout */
