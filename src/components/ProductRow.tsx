@@ -149,11 +149,33 @@ export function ProductRow({ product }: { product: Product }) {
   const [imageFailed, setImageFailed] = useState(false);
   const { price, wholesaleApplied } = unitPriceFor(product, qty, mode);
 
-  // Prefer bundled catalog artwork for products with an explicit local mapping.
-  // This prevents an older Supabase image_url from overriding the newly assigned images.
+  // Prefer the bundled mapping for Mochi Café and specifically mapped frozen products.
+  // Their existing Supabase image_url values may point to stale or shared images.
   const mappedImage = localProductImage({ ...product, image: null });
-  // Precedence: uploaded image, then bundled product image, then generic fallback.
-  const imageSource = product.image ?? mappedImage ?? productPresunto;
+  const productKey = normalize(`${product.id} ${product.name}`);
+  const isMochiCafeProduct =
+    normalize(product.category).includes("mochi") ||
+    productKey.includes("cafe especial") ||
+    productKey.includes("cafe 84 pontos") ||
+    productKey.includes("cafe moido") ||
+    productKey.includes("tradicional superior") ||
+    productKey.includes("cafe em graos") ||
+    productKey.includes("cafe graos");
+  const isMappedFrozenProduct =
+    productKey.includes("bolinha de queijo") ||
+    productKey.includes("bolinha queijo") ||
+    productKey.includes("bolinha napolitana") ||
+    productKey.includes("coxinha de frango") ||
+    productKey.includes("coxinha frango") ||
+    productKey.includes("bolinha de milho") ||
+    productKey.includes("bolinha milho") ||
+    productKey.includes("mini churros");
+  // Keep admin-uploaded images for other products, but use the corrected bundled
+  // images for the Mochi Café and frozen items called out in the catalog fix.
+  const imageSource =
+    isMochiCafeProduct || isMappedFrozenProduct
+      ? mappedImage ?? product.image ?? productPresunto
+      : product.image ?? mappedImage ?? productPresunto;
   const fallbackImage = mappedImage ?? productPresunto;
   const displayImage = imageFailed ? fallbackImage : imageSource;
   const showImage = Boolean(displayImage);
