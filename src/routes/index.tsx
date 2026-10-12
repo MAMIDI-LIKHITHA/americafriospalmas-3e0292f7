@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Star, Store, MessageCircle, PackageCheck, Sparkles, Utensils, Instagram, Gift, Coffee } from "lucide-react";
 
-import { CategoryCard } from "@/components/CategoryCard";
 import { EspetinhosShowcase } from "@/components/EspetinhosShowcase";
 import { StoreCard } from "@/components/StoreCard";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
@@ -15,6 +14,7 @@ import homeFallbackImg from "@/assets/espetinhos.jpg";
 import sectionFallbackImg from "@/assets/frios.jpg";
 import varietyFallbackImg from "@/assets/atacado.jpg";
 import homepageEspetinhosImg from "@/assets/espetinhos-brasil.jpg";
+import homepageCarnesImg from "@/assets/suinos.jpg";
 import homepageFriosImg from "@/assets/frios.jpg";
 import homepageQueijosImg from "@/assets/Queijos — Cheese.png";
 import homepagePresuntosImg from "@/assets/Presuntos — Ham.png";
@@ -29,7 +29,7 @@ const homepageBebidasImg =
   "https://images.unsplash.com/photo-1532634896-26909d0d4b9e?auto=format&fit=crop&w=1000&q=85";
 
 const HOMEPAGE_CATEGORY_IMAGES: Record<string, string> = {
-  carnes: homepageFriosImg,
+  carnes: homepageCarnesImg,
   espetinhos: homepageEspetinhosImg,
   salgados: homepageSalgadosImg,
   "mochi-cafe": homepageMochiCafeImg,
