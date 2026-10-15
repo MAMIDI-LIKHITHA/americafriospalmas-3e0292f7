@@ -186,6 +186,28 @@ function Index() {
         </div>
       </section>
 
+      <section className="container-page pt-6 md:pt-8">
+        <div className="relative overflow-hidden rounded-2xl border border-primary/25 bg-primary/5 px-6 py-6 shadow-sm md:flex md:items-center md:justify-between md:gap-8 md:px-9 md:py-7">
+          <div className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full bg-primary/10" />
+          <div className="relative">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">
+              <Star className="h-3.5 w-3.5 fill-current" /> Destaque
+            </span>
+            <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">Espetinhos</h2>
+            <p className="mt-2 max-w-2xl text-sm text-muted-foreground md:text-base">
+              Uma variedade de sabores para deixar seu churrasco ainda melhor.
+            </p>
+          </div>
+          <Link
+            to="/produtos"
+            hash="espetinhos"
+            className="btn-base btn-brand relative mt-5 inline-flex shrink-0 items-center justify-center px-5 py-3 text-sm font-bold md:mt-0"
+          >
+            Ver Espetinhos
+          </Link>
+        </div>
+      </section>
+
       <section className="container-page py-8 md:py-10">
         <div className="mb-5">
           <p className="text-sm font-bold tracking-widest text-primary uppercase">Nossas categorias</p>
