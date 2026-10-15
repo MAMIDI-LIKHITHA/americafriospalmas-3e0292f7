@@ -1,8 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Star, Store, MessageCircle, PackageCheck, Sparkles, Utensils, Instagram, Gift, Coffee } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Star, Store, MessageCircle, PackageCheck, Sparkles, Utensils, Instagram, Gift, Coffee, Search } from "lucide-react";
 
 import { EspetinhosShowcase } from "@/components/EspetinhosShowcase";
+import { CategoryCard } from "@/components/CategoryCard";
+import { ModeToggle } from "@/components/ModeToggle";
 import { StoreCard } from "@/components/StoreCard";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { catalogQueryOptions } from "@/lib/catalog";
@@ -116,6 +119,24 @@ const EXPERIENCES = [
 
 function Index() {
   const { data: categories } = useSuspenseQuery(catalogQueryOptions);
+  const [productSearch, setProductSearch] = useState("");
+  const [selectedProductCategory, setSelectedProductCategory] = useState("all");
+  const filteredProductCategories = useMemo(() => {
+    const term = productSearch.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    return categories
+      .filter((category) => selectedProductCategory === "all" || category.slug === selectedProductCategory)
+      .map((category) => ({
+        ...category,
+        products: category.products.filter((product) =>
+          !term || `${product.name} ${product.category} ${product.description ?? ""}`
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase()
+            .includes(term),
+        ),
+      }))
+      .filter((category) => category.products.length > 0);
+  }, [categories, productSearch, selectedProductCategory]);
   const espetinhos = categories.find((c) => c.slug === "espetinhos" && c.products.length > 0);
   const homepageCategories = [...categories].sort((a, b) => {
     const aIndex = HOMEPAGE_CATEGORY_ORDER.indexOf(a.slug);
@@ -209,6 +230,52 @@ function Index() {
           <Link to="/produtos" className="text-sm font-semibold text-primary hover:underline">
             Ver todas as categorias →
           </Link>
+        </div>
+      </section>
+
+      <section id="catalogo" className="border-y border-border bg-secondary/40 py-12 md:py-16">
+        <div className="container-page">
+          <p className="text-sm font-bold tracking-widest text-primary uppercase">Catálogo completo</p>
+          <h2 className="mt-2 font-display text-3xl md:text-4xl">Todos os produtos, direto na página inicial</h2>
+          <p className="mt-3 max-w-2xl text-muted-foreground">
+            Encontre seus produtos favoritos, filtre por categoria e monte seu pedido sem precisar sair da página inicial.
+          </p>
+          <div className="mt-6 flex flex-wrap items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 p-4">
+            <ModeToggle />
+            <p className="text-sm text-foreground/80">Preços de atacado aparecem automaticamente ao atingir a quantidade mínima de cada item.</p>
+          </div>
+          <div className="mt-6 space-y-4">
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+              <input value={productSearch} onChange={(event) => setProductSearch(event.target.value)} placeholder="Buscar produtos, carnes, queijos, espetinhos..." aria-label="Buscar produtos na página inicial" className="w-full rounded-xl border border-border bg-background py-3 pl-12 pr-4 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" />
+            </div>
+            <div className="flex gap-2 overflow-x-auto pb-1">
+              <button type="button" onClick={() => setSelectedProductCategory("all")} className={selectedProductCategory === "all" ? "shrink-0 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground" : "shrink-0 rounded-full bg-secondary px-4 py-2 text-sm font-semibold text-secondary-foreground"}>Todas</button>
+              {categories.map((category) => (
+                <button key={category.slug} type="button" onClick={() => setSelectedProductCategory(category.slug)} className={selectedProductCategory === category.slug ? "shrink-0 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground" : "shrink-0 rounded-full bg-secondary px-4 py-2 text-sm font-semibold text-secondary-foreground"}>{category.name}</button>
+              ))}
+            </div>
+          </div>
+          {filteredProductCategories.length === 0 ? (
+            <div className="mt-8 rounded-2xl border border-border bg-card p-10 text-center">
+              <p className="font-semibold">Nenhum produto encontrado.</p>
+              <p className="mt-1 text-sm text-muted-foreground">Tente outro termo ou escolha outra categoria.</p>
+            </div>
+          ) : (
+            <div className="mt-8 space-y-8">
+              {filteredProductCategories.map((category) => (
+                <div key={category.slug} className={category.name === "Espetinhos" ? "rounded-2xl border-2 border-primary/40 bg-primary/5 p-2 sm:p-3" : ""}>
+                  {category.name === "Espetinhos" && <div className="mb-2 flex items-center gap-2 px-3 pt-2 text-sm font-bold text-primary"><Star className="h-4 w-4 fill-current" /> Destaque da casa</div>}
+                  <CategoryCard category={category} showProducts />
+                </div>
+              ))}
+            </div>
+          )}
+          <section className="mt-12 rounded-2xl bg-charcoal px-6 py-10 text-center text-cream md:py-12">
+            <h3 className="font-display text-2xl md:text-3xl">Precisa de um orçamento para atacado?</h3>
+            <p className="mx-auto mt-3 max-w-xl text-sm text-cream/75">Atendemos famílias, mercados, lanchonetes e revendedores em Palmas e região.</p>
+            <WhatsAppButton size="lg" className="mt-6" message="Olá! Vim pelo site e gostaria de um orçamento de atacado." />
+          </section>
         </div>
       </section>
 
