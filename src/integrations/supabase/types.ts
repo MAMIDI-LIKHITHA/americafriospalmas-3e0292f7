@@ -360,6 +360,45 @@ export type Database = {
         }
         Relationships: []
       }
+      promotions: {
+        Row: {
+          active: boolean
+          badge: string | null
+          created_at: string
+          cta_label: string | null
+          cta_url: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          sort_order: number
+          title: string
+        }
+        Insert: {
+          active?: boolean
+          badge?: string | null
+          created_at?: string
+          cta_label?: string | null
+          cta_url?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          sort_order?: number
+          title: string
+        }
+        Update: {
+          active?: boolean
+          badge?: string | null
+          created_at?: string
+          cta_label?: string | null
+          cta_url?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          sort_order?: number
+          title?: string
+        }
+        Relationships: []
+      }
       stores: {
         Row: {
           active: boolean
