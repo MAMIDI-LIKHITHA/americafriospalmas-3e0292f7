@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Star, Store, MessageCircle, PackageCheck, Sparkles, Utensils, Instagram, Gift, Coffee, Search } from "lucide-react";
 
 import { EspetinhosShowcase } from "@/components/EspetinhosShowcase";
+import { PromotionCards } from "@/components/PromotionCards";
 import { CategoryCard } from "@/components/CategoryCard";
 import { ModeToggle } from "@/components/ModeToggle";
 import { StoreCard } from "@/components/StoreCard";
@@ -185,6 +186,8 @@ function Index() {
           </div>
         </div>
       </section>
+
+      <PromotionCards />
 
       <section className="container-page pt-6 md:pt-8">
         <div className="relative overflow-hidden rounded-2xl border border-primary/25 bg-primary/5 px-6 py-6 shadow-sm md:flex md:items-center md:justify-between md:gap-8 md:px-9 md:py-7">
