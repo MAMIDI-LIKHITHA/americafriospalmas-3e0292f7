@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Star, Store, MessageCircle, PackageCheck, Sparkles, Utensils, Instagram, Gift, Coffee, Search } from "lucide-react";
 
 import { EspetinhosShowcase } from "@/components/EspetinhosShowcase";
+import { PromotionCards } from "@/components/PromotionCards";
 import { CategoryCard } from "@/components/CategoryCard";
 import { ModeToggle } from "@/components/ModeToggle";
 import { StoreCard } from "@/components/StoreCard";

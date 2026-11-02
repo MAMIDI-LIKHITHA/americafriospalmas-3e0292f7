@@ -24,6 +24,7 @@ import { Route as AdminChangePasswordRouteImport } from './routes/admin/change-p
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminPedidosRouteImport } from './routes/admin/pedidos'
 import { Route as AdminProdutosRouteImport } from './routes/admin/produtos'
+import { Route as AdminPromocoesRouteImport } from './routes/admin/promocoes'
 import { Route as AdminRelatoriosRouteImport } from './routes/admin/relatorios'
 import { Route as AdminVagasRouteImport } from './routes/admin/vagas'
 
@@ -102,6 +103,11 @@ const AdminProdutosRoute = AdminProdutosRouteImport.update({
   path: '/admin/produtos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPromocoesRoute = AdminPromocoesRouteImport.update({
+  id: '/admin/promocoes',
+  path: '/admin/promocoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRelatoriosRoute = AdminRelatoriosRouteImport.update({
   id: '/admin/relatorios',
   path: '/admin/relatorios',
@@ -128,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/admin/login': typeof AdminLoginRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin/produtos': typeof AdminProdutosRoute
+  '/admin/promocoes': typeof AdminPromocoesRoute
   '/admin/relatorios': typeof AdminRelatoriosRoute
   '/admin/vagas': typeof AdminVagasRoute
   '/admin/': typeof AdminIndexRoute
@@ -147,6 +154,7 @@ export interface FileRoutesByTo {
   '/admin/login': typeof AdminLoginRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin/produtos': typeof AdminProdutosRoute
+  '/admin/promocoes': typeof AdminPromocoesRoute
   '/admin/relatorios': typeof AdminRelatoriosRoute
   '/admin/vagas': typeof AdminVagasRoute
   '/admin': typeof AdminIndexRoute
@@ -167,6 +175,7 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin/produtos': typeof AdminProdutosRoute
+  '/admin/promocoes': typeof AdminPromocoesRoute
   '/admin/relatorios': typeof AdminRelatoriosRoute
   '/admin/vagas': typeof AdminVagasRoute
   '/admin/': typeof AdminIndexRoute
@@ -188,6 +197,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/pedidos'
     | '/admin/produtos'
+    | '/admin/promocoes'
     | '/admin/relatorios'
     | '/admin/vagas'
     | '/admin/'
@@ -207,6 +217,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/pedidos'
     | '/admin/produtos'
+    | '/admin/promocoes'
     | '/admin/relatorios'
     | '/admin/vagas'
     | '/admin'
@@ -226,6 +237,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/pedidos'
     | '/admin/produtos'
+    | '/admin/promocoes'
     | '/admin/relatorios'
     | '/admin/vagas'
     | '/admin/'
@@ -246,6 +258,7 @@ export interface RootRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   AdminPedidosRoute: typeof AdminPedidosRoute
   AdminProdutosRoute: typeof AdminProdutosRoute
+  AdminPromocoesRoute: typeof AdminPromocoesRoute
   AdminRelatoriosRoute: typeof AdminRelatoriosRoute
   AdminVagasRoute: typeof AdminVagasRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -358,6 +371,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProdutosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/promocoes': {
+      id: '/admin/promocoes'
+      path: '/admin/promocoes'
+      fullPath: '/admin/promocoes'
+      preLoaderRoute: typeof AdminPromocoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/relatorios': {
       id: '/admin/relatorios'
       path: '/admin/relatorios'
@@ -390,6 +410,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   AdminPedidosRoute: AdminPedidosRoute,
   AdminProdutosRoute: AdminProdutosRoute,
+  AdminPromocoesRoute: AdminPromocoesRoute,
   AdminRelatoriosRoute: AdminRelatoriosRoute,
   AdminVagasRoute: AdminVagasRoute,
   AdminIndexRoute: AdminIndexRoute,
