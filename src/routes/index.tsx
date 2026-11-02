@@ -187,6 +187,8 @@ function Index() {
         </div>
       </section>
 
+      <PromotionCards />
+
       <section className="container-page pt-6 md:pt-8">
         <div className="relative overflow-hidden rounded-2xl border border-primary/25 bg-primary/5 px-6 py-6 shadow-sm md:flex md:items-center md:justify-between md:gap-8 md:px-9 md:py-7">
           <div className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full bg-primary/10" />
