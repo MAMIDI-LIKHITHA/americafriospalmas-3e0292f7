@@ -22,6 +22,13 @@
       "when": 1793647064148,
       "tag": "0002_create_promotions",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1793688881790,
+      "tag": "0003_fix_promotions_anon_read_policy",
+      "breakpoints": true
     }
   ]
 }
